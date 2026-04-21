@@ -11,8 +11,8 @@ const config = {
     v4: true,
   },
 
-  url: 'https://edgeaicamp.in',
-  baseUrl: ' /docs.edgeaicamp/',
+  url: 'https://docs.edgeaicamp.in',
+  baseUrl: '/',
 
   organizationName: 'edgeaicamp',
   projectName: 'edgeaicamp-docs',
