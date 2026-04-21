@@ -14,7 +14,7 @@ const config = {
   url: 'https://docs.edgeaicamp.in/',
   baseUrl: '/',
 
-  organizationName: 'salmanfarisvpp',
+  organizationName: 'salmanfarisvp',
   projectName: 'docs.edgeaicamp',
 
   onBrokenLinks: 'warn',
