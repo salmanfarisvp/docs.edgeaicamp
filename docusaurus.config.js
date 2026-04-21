@@ -11,11 +11,11 @@ const config = {
     v4: true,
   },
 
-  url: 'https://docs.edgeaicamp.in',
+  url: 'https://docs.edgeaicamp.in/',
   baseUrl: '/',
 
-  organizationName: 'edgeaicamp',
-  projectName: 'edgeaicamp-docs',
+  organizationName: 'salmanfarisvpp',
+  projectName: 'docs.edgeaicamp',
 
   onBrokenLinks: 'warn',
 
@@ -76,7 +76,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/edgeaicamp',
+            href: 'https://github.com/salmanfarisvpp',
             label: 'GitHub',
             position: 'right',
           },
