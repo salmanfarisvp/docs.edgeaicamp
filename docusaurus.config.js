@@ -12,7 +12,7 @@ const config = {
   },
 
   url: 'https://edgeaicamp.in',
-  baseUrl: '/',
+  baseUrl: ' /docs.edgeaicamp/',
 
   organizationName: 'edgeaicamp',
   projectName: 'edgeaicamp-docs',
