@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkedgeaicamp_docs=self.webpackChunkedgeaicamp_docs||[]).push([["823"],{7176(e,c,s){s.r(c),s.d(c,{default:()=>r});var a=s(4848),d=s(6347);function r(){return(0,a.jsx)(d.rd,{to:"/docs/intro"})}}}]);
