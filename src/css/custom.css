@@ -1,0 +1,37 @@
+/**
+ * Physical AI Bootcamp — Custom CSS
+ * Primary brand color: #03979d (teal)
+ */
+
+/* ── Light Mode ── */
+:root {
+  --ifm-color-primary: #03979d;
+  --ifm-color-primary-dark: #02878c;
+  --ifm-color-primary-darker: #027478;
+  --ifm-color-primary-darkest: #01575a;
+  --ifm-color-primary-light: #04aeb4;
+  --ifm-color-primary-lighter: #04bdc3;
+  --ifm-color-primary-lightest: #04d5dc;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Hero gradient — deep teal */
+  --pab-hero-gradient: linear-gradient(135deg, #041c1d 0%, #023234 55%, #033f42 100%);
+}
+
+/* ── Dark Mode ── */
+[data-theme='dark'] {
+  --ifm-color-primary: #05c4ca;
+  --ifm-color-primary-dark: #04aeb4;
+  --ifm-color-primary-darker: #04a5ab;
+  --ifm-color-primary-darkest: #03878d;
+  --ifm-color-primary-light: #1ecdd3;
+  --ifm-color-primary-lighter: #2dd1d7;
+  --ifm-color-primary-lightest: #4ddce1;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Smooth scrolling ── */
+html {
+  scroll-behavior: smooth;
+}

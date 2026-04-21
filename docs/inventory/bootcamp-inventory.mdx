@@ -1,0 +1,92 @@
+---
+sidebar_position: 1
+---
+
+# Bootcamp Inventory
+
+Hardware used during the Physical AI Bootcamp — powered by [Robu.in](https://robu.in) and [Arduino.cc](https://arduino.cc).
+
+:::info Hardware Policy
+All Arduino Q boards and sensor modules used during the workshop will either be **collected at the end** of the bootcamp or made available for **on-the-spot purchase**. A consolidated inventory report will be shared with the Robu and Arduino teams.
+
+Shared sensor kits will be retained and reused across future bootcamps.
+:::
+
+---
+
+## Core Kits
+
+*One per participant (25 units per batch)*
+
+| Item | Qty | Purpose |
+|---|---|---|
+| Arduino Q Board | 25 | Main microcontroller for all projects |
+| USB Hub — Arduino USB-C Hub 8-in-1 (TPX00241) | 25 | Connectivity hub for camera, peripherals |
+| USB Type-C Cable | 25 | Programming and power supply |
+| Breadboard (Mini) | 25 | Circuit prototyping |
+| Jumper Wire Sets (M-M, M-F) | 10 sets | Circuit connections |
+| LEDs (Assorted) | ~50 | Output indicators |
+| Resistors (Assorted) | ~125 | Current limiting / Pull-up / Pull-down |
+| Push Buttons | ~30 | Manual input testing |
+
+---
+
+## Sensors Pool
+
+*Shared across teams — available to borrow during sessions*
+
+| Item | Qty | Interface | Purpose |
+|---|---|---|---|
+| USB Camera | 25 | USB | Image classification and sound capture |
+| Microphone Module *(if USB camera not available)* | ~5 | I2C / USB | Sound classification projects |
+| IMU Module (Accelerometer + Gyro) | ~5 | I2C | Motion and gesture detection |
+| Ultrasonic Sensor (HC-SR04) | ~5 | Digital | Distance sensing for robotics |
+| Temperature Sensor | 5 | Digital / Analog | Environmental monitoring |
+| Vibration Sensor | 5 | Digital / Analog | Anomaly detection |
+| Light Sensor (LDR / Digital) | 5 | Analog / Digital | Ambient detection systems |
+| OLED Display Module *(Optional)* | 5 | I2C | Visual output display |
+
+:::note Built-in Sensors on Arduino Q
+The Arduino Q has a built-in **IMU** (accelerometer + gyroscope) and a built-in **microphone**. Many projects can be built using only the board itself — no extra sensors needed.
+:::
+
+---
+
+## Robotics Pool
+
+*Available for advanced / robotics-focused teams*
+
+| Item | Qty | Purpose |
+|---|---|---|
+| Robot Chassis Kit (2WD) | 5 | Intelligent robotic systems |
+| Motor Driver Module | 5 | Motor speed and direction control |
+| DC Motors (BO) | 5 | Drive wheels |
+| Rechargeable Battery Pack | 5 | Robot power supply |
+| Battery Charger | 3 | Charging between sessions |
+
+---
+
+## Software Checklist
+
+Install these before arriving on Day 1:
+
+- [ ] **Arduino IDE 2.x** — [arduino.cc/en/software](https://www.arduino.cc/en/software)
+- [ ] **Arduino Q board package** — via Boards Manager (see [Installation Guide](/docs/arduino-q/installation))
+- [ ] **Edge Impulse CLI** — `npm install -g edge-impulse-cli`
+- [ ] **Free Edge Impulse account** — [edgeimpulse.com](https://edgeimpulse.com)
+- [ ] **Free hackster.io account** — [hackster.io](https://www.hackster.io) *(for project documentation)*
+- [ ] **Python 3.x** *(optional)* — for custom scripts
+
+---
+
+## Hardware Handling Rules
+
+- Handle the Arduino Q board by the edges — avoid touching components directly
+- Do **not** apply voltages above 3.3 V to GPIO pins unless specified
+- Always double-check wiring before powering up
+- Return all shared sensors to the pool at the end of each session
+- Robotics kits — return fully assembled and charged
+
+:::tip Missing Something?
+If an item is missing from your kit, notify the facilitator before the session starts. Spare units are available.
+:::

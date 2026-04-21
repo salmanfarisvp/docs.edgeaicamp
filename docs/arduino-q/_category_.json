@@ -1,0 +1,8 @@
+{
+  "label": "🔌 Arduino Q Setup",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Set up your Arduino Q board and write your first program."
+  }
+}

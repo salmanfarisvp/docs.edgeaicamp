@@ -1,0 +1,88 @@
+.section {
+  padding: 5rem 0 4rem;
+  width: 100%;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.sectionTitle {
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 1rem !important;
+}
+
+.sectionSub {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-600);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ── Card ── */
+.cardCol {
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  padding: 1.75rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  background: var(--ifm-card-background-color);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Icon box ── */
+.iconBox {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+  flex-shrink: 0;
+}
+
+.icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* ── Card text ── */
+.cardTitle {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.cardDesc {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.94rem;
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: 1.25rem;
+}
+
+.cardLink {
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.cardLink:hover {
+  text-decoration: underline;
+}

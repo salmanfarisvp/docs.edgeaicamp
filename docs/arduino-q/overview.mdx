@@ -1,0 +1,71 @@
+---
+sidebar_position: 1
+---
+
+# Arduino Q — Overview
+
+The **Arduino Q** is the main microcontroller board used in this workshop. It is designed for edge AI and TinyML applications — small, low-power, and capable of running ML inference directly on the chip.
+
+---
+
+## Board Highlights
+
+| Feature | Specification |
+|---|---|
+| Processor | 32-bit ARM Cortex-M |
+| Clock Speed | Up to 120 MHz |
+| Flash Memory | 1 MB |
+| RAM | 256 KB |
+| Connectivity | USB, UART, I2C, SPI |
+| Built-in Sensors | IMU (accelerometer + gyroscope), Microphone |
+| Power | USB or 3.7 V LiPo |
+| Form Factor | Arduino Nano compatible |
+
+:::info
+Update the specifications above with the exact specs for your Arduino Q variant.
+:::
+
+---
+
+## What's on the Board
+
+```
+┌─────────────────────────────────────┐
+│  [ USB-C ]  Arduino Q               │
+│                                     │
+│  ○ LED (built-in, pin 13)           │
+│  ○ RGB LED                          │
+│  ● IMU (LSM9DS1 or similar)         │
+│  ● Microphone (PDM)                 │
+│                                     │
+│  [ Digital Pins D0–D13 ]            │
+│  [ Analog Pins A0–A7   ]            │
+│  [ I2C: SDA/SCL ]                   │
+│  [ SPI: MOSI/MISO/SCK ]             │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Why Arduino for Edge AI?
+
+- **Arduino IDE** is beginner-friendly with thousands of libraries
+- **TensorFlow Lite for Microcontrollers** has first-class Arduino support
+- **Edge Impulse** deploys directly to Arduino boards in one click
+- **Large community** — easy to find help and examples
+- **Low cost** — accessible for workshops and students
+
+---
+
+## In This Section
+
+| Page | Description |
+|---|---|
+| [Installation](/docs/arduino-q/installation) | Install drivers, IDE, and board packages |
+| [Your First Project](/docs/arduino-q/first-project) | Blink an LED and use the serial monitor |
+
+---
+
+## Next Steps
+
+→ [Installation](/docs/arduino-q/installation) — get the software set up

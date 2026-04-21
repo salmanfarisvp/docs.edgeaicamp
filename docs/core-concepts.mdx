@@ -1,0 +1,180 @@
+---
+sidebar_position: 4
+---
+
+# Edge AI, Physical AI & TinyML
+
+This page covers the three core concepts of the workshop — what they are, how they connect, and what you need to know before the hands-on sessions.
+
+---
+
+## 1 — Edge AI
+
+**Edge AI** means running AI inference locally on a device — at the "edge" of the network — instead of sending data to a cloud server.
+
+### Cloud AI vs. Edge AI
+
+| | Cloud AI | Edge AI |
+|---|---|---|
+| Where it runs | Remote server | On the device |
+| Latency | 100 ms – seconds | < 10 ms |
+| Internet required | Yes | No |
+| Privacy | Data leaves device | Data stays on device |
+| Power | High | Milliwatts |
+
+### Why it matters
+- **Real-time response** — a model on a microcontroller reacts in milliseconds
+- **Works offline** — no Wi-Fi needed in the field
+- **Privacy-first** — raw sensor data never leaves the device
+- **Low power** — run for months on a coin cell
+
+### The Edge AI pipeline
+
+```
+Data Collection → Feature Engineering → Training → Quantization
+                                                        ↓
+                                          Export (.tflite) → Deploy to Device → Inference
+```
+
+Training happens on your laptop or in the cloud. **Inference** (the prediction step) runs on the Arduino Q itself.
+
+---
+
+## 2 — Physical AI
+
+**Physical AI** is AI that perceives and acts in the physical world — using sensors to read the environment and actuators to respond.
+
+### The perception–inference–action loop
+
+```
+SENSORS ──▶ AI INFERENCE ──▶ ACTUATORS
+   ▲                              │
+   └────────── Feedback ──────────┘
+```
+
+### Sensors in your kit
+
+| Sensor | What it measures | Use case |
+|---|---|---|
+| IMU (built-in) | Acceleration + rotation | Gesture recognition |
+| Microphone (built-in) | Audio | Keyword spotting |
+| DHT22 | Temperature + humidity | Environmental monitoring |
+| HC-SR04 | Distance | Object detection |
+
+**Reading the IMU:**
+```arduino
+#include <Arduino_LSM9DS1.h>
+float ax, ay, az;
+IMU.readAcceleration(ax, ay, az);
+// ax/ay/az are in g (1.0 = 9.8 m/s²)
+```
+
+### Actuators in your kit
+
+| Actuator | What it does | Use case |
+|---|---|---|
+| LED / RGB LED | Light output | Visual feedback |
+| SG90 Servo | Rotates 0–180° | Gesture control |
+| Active Buzzer | Tone output | Audio alerts |
+| Relay | Switches mains loads | Smart switch |
+
+**Controlling a servo:**
+```arduino
+#include <Servo.h>
+Servo myServo;
+myServo.attach(9);
+myServo.write(90); // Rotate to 90°
+```
+
+### Sensor fusion
+Combining multiple sensors gives richer data:
+- IMU + Microphone → gesture + voice recognition
+- Temp + Humidity + CO₂ → air quality classification
+
+---
+
+## 3 — TinyML
+
+**TinyML** is machine learning on microcontrollers — hardware that costs a few dollars and uses milliwatts of power.
+
+### TinyML vs. standard ML
+
+| | Standard ML | TinyML |
+|---|---|---|
+| Hardware | GPU server | Microcontroller |
+| RAM | GBs | Kilobytes |
+| Power | Hundreds of watts | Microwatts–milliwatts |
+| Cost | $thousands | $1–$10 |
+
+### Common TinyML applications
+
+**Keyword spotting** — detect spoken words ("yes", "no", "go") from microphone audio.  
+**Gesture recognition** — classify hand movements from IMU data.  
+**Anomaly detection** — flag unusual sensor readings (predictive maintenance).  
+**Image classification** — detect people or objects with a small camera.
+
+### Quantization
+
+A trained model uses 32-bit floats — too large for a microcontroller. **Quantization** converts weights to 8-bit integers:
+
+| Format | Size | Speed | Accuracy |
+|---|---|---|---|
+| Float32 | 4× base | Baseline | Highest |
+| Int8 | 1× base | 2–4× faster | ~97–99% of Float32 |
+
+### TensorFlow Lite for Microcontrollers (TFLM)
+
+The inference runtime that runs on your Arduino Q:
+
+```cpp
+// Simplified TFLM inference loop
+tflite::MicroInterpreter interpreter(model, resolver, tensor_arena, arena_size);
+interpreter.AllocateTensors();
+
+// Feed sensor data as input
+float* input = interpreter.input(0)->data.f;
+input[0] = accel_x;
+input[1] = accel_y;
+input[2] = accel_z;
+
+// Run the model
+interpreter.Invoke();
+
+// Read the prediction
+float* output = interpreter.output(0)->data.f;
+// output[i] = probability for class i
+```
+
+### Training with Edge Impulse
+
+[Edge Impulse](https://edgeimpulse.com) handles the full pipeline in the browser — no ML expertise required:
+
+1. **Collect** sensor data from your Arduino Q
+2. **Process** — auto-extract features (FFT, MFCCs, spectrograms)
+3. **Train** — pick a model architecture, click Start Training
+4. **Deploy** — download an Arduino library, upload with one click
+
+---
+
+## How They All Fit Together
+
+```
+Physical World
+      │
+   Sensors (IMU, Mic, DHT22…)          ← Physical AI: perceive
+      │
+  Signal Processing (windowing, FFT)   ← TinyML: prepare features
+      │
+   ML Inference (TFLM on Arduino Q)    ← Edge AI: predict on-device
+      │
+   Actuators (LED, Servo, Buzzer…)     ← Physical AI: act
+```
+
+Every project in this workshop follows this exact flow. Once you understand it, the rest is just filling in the details.
+
+---
+
+## Next Steps
+
+→ [Project Examples](/docs/projects/overview) — apply these concepts in a full build  
+→ [Arduino Q — First Project](/docs/arduino-q/first-project) — get sensor data flowing before training

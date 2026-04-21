@@ -1,0 +1,116 @@
+---
+sidebar_position: 1
+---
+
+# Project Examples
+
+All projects follow the Physical AI system architecture:
+
+```
+Sensor → Model → Decision → Actuator
+```
+
+Day 1 ends with a **guided project** (done together as a group). Day 2 is your **team's own build** — pick one of the ideas below or propose your own.
+
+---
+
+## Guided Project (Day 1)
+
+The facilitator leads the full group through one complete Physical AI project from start to finish — data collection, model training on Edge Impulse, deployment to Arduino Q, and actuator response. This is your reference for Day 2.
+
+*Project TBD based on batch — confirmed on Day 1.*
+
+---
+
+## Project Ideas for Day 2
+
+### 🎤 Gesture / Motion Classifier
+**Sensors:** IMU (Accelerometer + Gyro)  
+**Model:** Motion classification — TinyML on Edge Impulse  
+**Actuator:** LED, Servo, Buzzer  
+**Idea:** Classify specific hand gestures or arm movements and trigger a corresponding response (rotate servo, change LED colour, sound alert).
+
+---
+
+### 👁️ Visual Classifier
+**Sensors:** USB Camera  
+**Model:** Image classification — Edge Impulse FOMO or MobileNet  
+**Actuator:** LED, Relay, Buzzer  
+**Idea:** Detect a specific object, person presence, or condition from camera feed and trigger an action.
+
+---
+
+### 🔊 Sound Classifier
+**Sensors:** USB Camera with built-in mic, or Microphone Module (if camera unavailable)  
+**Model:** Sound classification — keyword spotting or event detection  
+**Actuator:** LED, Servo, Buzzer  
+**Idea:** Detect a specific sound (clap, voice command, alarm) and respond with an actuator.
+
+---
+
+### 🤖 Intelligent Robot (Obstacle Avoidance + AI)
+**Sensors:** Ultrasonic Sensor (HC-SR04), IMU  
+**Model:** Obstacle detection / behaviour classification  
+**Actuator:** 2WD Robot Chassis, DC Motors, Motor Driver  
+**Idea:** A robot that navigates a path using distance sensing and an AI decision layer.
+
+---
+
+### 🚗 Driver Drowsiness Monitor *(Community Suggestion)*
+**Sensors:** USB Camera  
+**Model:** Eye-state or head-pose classification  
+**Actuator:** Buzzer alert  
+**Idea:** Detect when a driver's eyes are closed or head is drooping and trigger an alert. (Autonomous Car Monitoring — driver sleeping use case.)
+
+---
+
+### 📋 AI-Based Attendance System *(Community Suggestion)*
+**Sensors:** USB Camera  
+**Model:** Face detection / presence classification  
+**Actuator:** OLED display, LED indicator  
+**Idea:** Detect presence of a person and log attendance automatically using an on-device vision model.
+
+---
+
+### 🌡️ Anomaly Detection on Sensor Data
+**Sensors:** Temperature Sensor, Vibration Sensor  
+**Model:** Anomaly detection autoencoder — Edge Impulse  
+**Actuator:** Buzzer, LED alert  
+**Idea:** Learn what "normal" looks like and flag deviations — mimics industrial predictive maintenance.
+
+---
+
+## Choosing Your Project
+
+| Project | Sensors Needed | Difficulty |
+|---|---|---|
+| Gesture Classifier | IMU (built-in on Arduino Q) | ★☆☆ Beginner |
+| Sound Classifier | USB Camera / Mic Module | ★☆☆ Beginner |
+| Visual Classifier | USB Camera | ★★☆ Intermediate |
+| Anomaly Detection | Temp + Vibration Sensors | ★★☆ Intermediate |
+| Intelligent Robot | Ultrasonic + Motor Kit | ★★★ Advanced |
+| Driver Drowsiness | USB Camera | ★★☆ Intermediate |
+| Attendance System | USB Camera | ★★☆ Intermediate |
+
+:::tip Recommended for First-Timers
+Start with the **Gesture Classifier** — it uses only the built-in IMU on the Arduino Q (no extra wiring), and the full pipeline (data → train → deploy → demo) takes about 90 minutes.
+:::
+
+---
+
+## Final Deliverables Checklist
+
+Each team submits:
+
+- [ ] Project documentation (hackster.io or Arduino Project Hub)
+- [ ] Source code (GitHub link)
+- [ ] Dataset summary (Edge Impulse project link or export)
+- [ ] Demo video or photos
+- [ ] Brief presentation (live demo on Day 2)
+
+---
+
+## Next Steps
+
+→ [Bootcamp Inventory](/docs/inventory/bootcamp-inventory) — check what hardware is available for your chosen project  
+→ [Arduino Q First Project](/docs/arduino-q/first-project) — get comfortable with the board before Day 2 build
