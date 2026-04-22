@@ -1,0 +1,66 @@
+---
+sidebar_position: 2
+---
+
+# Arduino App Lab
+
+![App Lab](https://www.arduino.cc/wiki/static/app-lab-88b6f1ebab76eb4b458d45864625bf0b.png)
+
+The [Arduino App Lab](https://docs.arduino.cc/software/app-lab/) is a unified development environment that extends the classic Arduino experience into the world of high-performance computing. Arduino App Lab lets you seamlessly combine Arduino sketches, Python scripts, and containerized Linux applications into a single workflow.
+
+Arduino App Lab comes pre-installed on the UNO Q and can be used in Single-Board Computer (SBC) mode. We highly recommend the 4 GB of RAM UNO Q variant for a better standalone experience.
+
+![App Lab Access](https://docs.arduino.cc/static/a149a5e406178f25376d784b1d615e6d/cc559/modes-2.png)
+
+During the bootcamp, we will be using mostly as PC Hosted Mode
+
+---
+
+## Hello World
+
+Let’s program the UNO Q with the classic Hello World example typical of the Arduino ecosystem: the Blink sketch. We will use this example to verify that the board is correctly connected to the Arduino App Lab.
+
+### Prerequisites:
+
+- Arduino UNO Q
+- USB-C cable
+- Computer with internet access
+- Connect the UNO Q to your PC
+
+#### Step 1: Open the Arduino App Lab, it opens in the Examples section.
+
+![Open Example](https://docs.arduino.cc/static/0a65ce4fcc2af92a42eb2724ce1c231e/9b29b/examples.png)
+
+#### Step 2: Open the Blink LED example
+
+#### Step 3: Click on the Run button in the top right corner and wait for the app to be uploaded.
+
+![Run Blink Example](https://docs.arduino.cc/4cb0a8185d9e13ffa00bc7e8de632f1d/blink-flash.gif)
+
+You should now see the red LED of the built-in RGB LED turning on for one second, then off for one second, repeatedly.
+
+![Blink LED Demo](https://docs.arduino.cc/3f21c7aecbd7996633e62d7f85109832/blinking-led.gif)
+
+---
+
+### Running an App at Startup
+
+You can configure a specific App to launch automatically whenever the UNO Q is powered on. This is useful for standalone projects where the board operates without a computer connection.
+
+
+:::note
+You cannot set a built-in Example as the startup app directly from the UI. You must first click Copy and edit app from the example or create a new App from scratch.
+:::
+
+- Toggle the Run at startup switch to the ON position.
+
+![Run at Startup](https://docs.arduino.cc/static/2eaa971d3cf57c2e275de703099db401/29114/run-at-startup.png)
+
+Once configured, a DEFAULT badge will appear next to your App's name, indicating it will run automatically upon boot.
+
+
+
+
+
+
+

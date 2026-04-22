@@ -13,7 +13,9 @@ const sidebars = {
       label: '🚀 Getting Started',
       collapsed: false,
       items: [
-        'getting-started/workshop-overview',
+        'getting-started/bootcamp-overview',
+        'getting-started/bootcamp-guidelines',
+        'getting-started/bootcamp-hardware-kit',
       ],
     },
     {
@@ -31,7 +33,7 @@ const sidebars = {
       label: '🔌 Arduino Q',
       items: [
         'arduino-q/overview',
-        'arduino-q/installation',
+        'arduino-q/app-lab',
         'arduino-q/first-project',
       ],
     },
