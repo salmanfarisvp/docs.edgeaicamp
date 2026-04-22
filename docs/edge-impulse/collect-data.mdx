@@ -1,0 +1,92 @@
+---
+sidebar_position: 2
+---
+
+# Collect Data
+
+Data is the foundation of any machine learning model. Before you can train a model, you need a labelled dataset that represents the different classes you want to recognise.
+
+During this bootcamp we collect image data — either by uploading existing images, taking photos directly from your laptop camera, or using your mobile phone by scanning a QR code. **No CLI or terminal is needed.**
+
+---
+
+## What You're Collecting
+
+Each sample is an image paired with a **label** — the class name that describes what's in it.
+
+For example, if you're building an image classifier, you might collect samples labelled `cat`, `dog`, and `background`.
+
+---
+
+## Methods
+
+### 1. Upload Images from Your Computer
+
+If you already have a folder of images ready:
+
+1. In Edge Impulse Studio, go to **Data acquisition**.
+2. Click **Upload data**.
+3. Select your image files (JPG, PNG).
+4. Set the **label** for the batch.
+5. Choose whether to add them to the **Training** or **Test** set.
+6. Click **Upload** — your images will appear in the dataset immediately.
+
+---
+
+### 2. Take Photos Using Your Laptop Camera
+
+You can capture images live directly from your laptop's webcam without leaving the browser.
+
+1. In Edge Impulse Studio, go to **Data acquisition**.
+2. Click **Collect data** and select your laptop as the device.
+3. Set the **label** for what you're about to photograph.
+4. Point your laptop camera at the subject and click **Start sampling**.
+5. Edge Impulse will capture frames and add them to your dataset.
+
+---
+
+### 3. Use Your Mobile Phone via QR Code
+
+Edge Impulse lets you use your phone as a camera to capture images directly into your project.
+
+1. In Edge Impulse Studio, go to **Data acquisition**.
+2. Click **Connect a device → Use your mobile phone**.
+3. A **QR code** will appear on screen — scan it with your phone's camera.
+4. Your phone opens Edge Impulse in the browser and connects to your project automatically.
+5. Set the **label**, point your phone camera at the subject, and tap **Start sampling**.
+6. Photos are sent directly to your Edge Impulse dataset in real time.
+
+:::tip
+The mobile phone method is great for capturing images from different angles and distances quickly — your phone camera is also higher quality than most laptop cameras.
+:::
+
+---
+
+## Splitting Data: Training vs Test
+
+Edge Impulse splits your dataset into two sets:
+
+- **Training set** — used to teach the model.
+- **Test set** — used to evaluate the model after training. Keep this separate and don't train on it.
+
+A good starting split is **80% training / 20% test**. Edge Impulse handles this automatically when you upload data.
+
+---
+
+## Tips for Good Image Data
+
+- Photograph your subject from **multiple angles** — front, side, top.
+- Vary the **lighting** and **background** across samples.
+- Make sure the label matches exactly what's in the image — no mislabelled samples.
+- Aim for at least **30–50 images per class** to start; more is better.
+- Avoid using the same photo repeatedly — variety is what makes a model robust.
+
+---
+
+## Your Turn
+
+- [ ] Open **Data acquisition** in Edge Impulse Studio.
+- [ ] Collect at least **3 classes** of images using any of the methods above.
+- [ ] Aim for a minimum of **20 images per class**.
+- [ ] Verify your images appear in the dataset with the correct labels.
+- [ ] Check that your dataset is split into Training and Test sets.

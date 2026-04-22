@@ -36,6 +36,17 @@ const sidebars = {
         'arduino-q/app-lab',
         'arduino-q/apps',
         'arduino-q/brick',
+        'arduino-q/example-projects',
+      ],
+    },
+    {
+      type: 'category',
+      label: '🧠 Edge Impulse',
+      items: [
+        'edge-impulse/overview',
+        'edge-impulse/collect-data',
+        'edge-impulse/create-impulse',
+        'edge-impulse/model-deployment',
       ],
     },
     {

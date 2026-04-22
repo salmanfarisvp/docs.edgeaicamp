@@ -67,7 +67,8 @@ void loop() {}
 
 ---
 
-:::note Event-based vs Continuous Loop
+:::note 
+Event-based vs Continuous Loop
 In a typical Arduino sketch, logic lives inside `loop()` and runs forever. Here, `loop()` is empty. The Arduino only reacts when Python sends a command via the Bridge. This makes the system more predictable and easier to reason about — Python is the "brain", Arduino is the "muscle".
 :::
 

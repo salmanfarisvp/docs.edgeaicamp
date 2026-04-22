@@ -1,0 +1,40 @@
+---
+sidebar_position: 6
+---
+
+# Run Example Projects
+
+Arduino App Lab comes with a set of built-in example projects that you can run directly on the UNO Q without writing any code. These are a great way to explore what the board can do and get familiar with how Apps and the Bridge work in practice.
+
+---
+
+## How to Run an Example
+
+1. Open **Arduino App Lab** in your browser.
+2. Navigate to the **Examples** tab.
+3. Click on any example to open it.
+4. Click the **Run** button in the top right corner.
+5. Wait for the App to be uploaded and started on the board.
+
+:::note
+You cannot set a built-in example as a startup App directly. Use **Copy and edit app** first if you want to save or modify it.
+:::
+
+---
+
+## Example Projects
+
+- **Blink LED** — the classic blink sketch, a good first run to confirm your board is connected and working.
+- **Blink LED with UI** — control the LED on and off through a simple web interface served by the board.
+- **Air Quality on Matrix** — read air quality sensor data and display it on the onboard LED matrix.
+- **UNO Q Pin Toggle** — manually toggle digital pins from a web UI to test hardware connections.
+- **Bridge Echo** — Python sends a message to the Arduino via the Bridge, and the Arduino echoes it back to the shared console.
+- **Camera Stream** — stream live video from a connected camera to a browser interface.
+
+---
+
+## Your Turn
+
+- [ ] Run at least **three** of the examples above.
+- [ ] For each one, note what the Python side does and what the Arduino side does.
+- [ ] Find one example that uses the Bridge and identify the `Bridge.call()` or `Bridge.provide_safe()` in the code.

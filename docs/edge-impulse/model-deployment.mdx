@@ -1,0 +1,79 @@
+---
+sidebar_position: 4
+---
+
+# Model Testing & Deployment
+
+Once your model is trained, you need to verify it actually works before deploying it to the board. This section covers how to evaluate your model's performance and get it running on the Arduino Q.
+
+---
+
+## Step 1 — Train the Model
+
+1. In Edge Impulse Studio, go to **Classifier** (or your learning block).
+2. Click **Start training**.
+3. Wait for training to complete — this usually takes 1–3 minutes for small datasets.
+
+After training, Edge Impulse shows you:
+
+- **Accuracy** — percentage of training samples correctly classified.
+- **Loss** — how far off the predictions were on average (lower is better).
+- **Confusion matrix** — a breakdown of which classes were confused with each other.
+
+A good starting target is **85%+ accuracy** on the training set. If it's lower, you may need more data or better-separated classes.
+
+---
+
+## Step 2 — Test the Model
+
+Training accuracy alone is not enough — the model might be overfitting (memorising training data rather than learning patterns). Use the **Test set** to get an honest evaluation.
+
+1. Go to **Model testing** in Edge Impulse Studio.
+2. Click **Classify all**.
+3. Review the results:
+   - **Test accuracy** — how well the model performs on data it has never seen.
+   - **Confusion matrix** — identifies which classes are being misclassified.
+
+If test accuracy is significantly lower than training accuracy, your model is likely overfitting. Try collecting more varied data or reducing model complexity.
+
+---
+
+## Step 3 — Live Classification
+
+You can test the model in real time directly from your connected device before deploying.
+
+1. Go to **Live classification** in Edge Impulse Studio.
+2. Make sure your device is connected via `edge-impulse-daemon`.
+3. Perform one of your gestures or trigger a class.
+4. Watch the model output confidence scores in real time.
+
+This is the fastest way to spot if something is wrong before flashing.
+
+---
+
+## Step 4 — Deploy to Arduino Q
+
+Edge Impulse can export your trained model as an Arduino library that you can import directly into App Lab.
+
+1. Go to **Deployment** in Edge Impulse Studio.
+2. Select **Arduino library** as the deployment target.
+3. Choose **Quantized (int8)** for the smallest model size (recommended for MCU deployment).
+4. Click **Build** — Edge Impulse will compile the model and download a `.zip` file.
+5. In Arduino App Lab (or Arduino IDE), go to **Sketch → Include Library → Add .ZIP Library** and import the downloaded file.
+6. The library is now available in your sketch. Use `ei_impulse_result_t` and `run_classifier()` to run inference.
+
+---
+
+:::tip Quantized vs Float
+Quantized (int8) models are smaller and faster on the MCU but may have slightly lower accuracy. Float32 models are more accurate but use more memory. For the Arduino Q's MCU, always start with quantized.
+:::
+
+---
+
+## Your Turn
+
+- [ ] Train your model and note the training accuracy and loss.
+- [ ] Run **Classify all** on the test set and check the confusion matrix.
+- [ ] Use **Live classification** with your connected device to test at least two classes in real time.
+- [ ] Export the model as an **Arduino library** and import it into App Lab.
+- [ ] Call `run_classifier()` in your sketch and print the top prediction to the Serial Monitor.

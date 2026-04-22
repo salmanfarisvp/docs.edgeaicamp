@@ -1,0 +1,8 @@
+{
+  "label": "🧠 Edge Impulse",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn how to use Edge Impulse to train and deploy AI models on your Arduino Q board."
+  }
+}
