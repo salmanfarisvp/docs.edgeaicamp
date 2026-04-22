@@ -34,6 +34,8 @@ const sidebars = {
       items: [
         'arduino-q/overview',
         'arduino-q/app-lab',
+        'arduino-q/apps',
+        'arduino-q/brick',
         'arduino-q/first-project',
       ],
     },

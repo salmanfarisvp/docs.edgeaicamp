@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 5
 ---
 
 # Your First Project
@@ -34,6 +34,11 @@ void loop() {
 2. Click **Upload** (→)
 3. Open **Tools → Serial Monitor** and set baud rate to **115200**
 4. You should see `LED ON` / `LED OFF` alternating
+
+**Your Turn:**
+- [ ] Upload the sketch and confirm the LED blinks.
+- [ ] Confirm you see `LED ON` / `LED OFF` messages in the Serial Monitor.
+- [ ] Change the `delay(500)` values to speed up or slow down the blink and re-upload.
 
 ---
 
@@ -75,6 +80,12 @@ void loop() {
 - Tilt it: watch X and Y change
 - These raw acceleration values are what a gesture recognition model will learn from
 
+**Your Turn:**
+- [ ] Upload the sketch and open the Serial Monitor.
+- [ ] Lay the board flat and confirm `Z ≈ 1.0`.
+- [ ] Tilt the board left/right and forward/back — watch X and Y respond.
+- [ ] Try holding the board vertically and note which axis reads `≈ 1.0` now.
+
 ---
 
 ## Project 3 — RGB LED Rainbow
@@ -112,6 +123,11 @@ void loop() {
 Check your specific Arduino Q pinout diagram for the correct RGB LED pin numbers. These vary by board variant.
 :::
 
+**Your Turn:**
+- [ ] Upload the sketch and verify each color cycles correctly.
+- [ ] Add a new color of your choice (e.g. cyan: `0, 255, 255`) to the sequence.
+- [ ] Adjust the `delay()` values to create a faster or slower fade effect.
+
 ---
 
 ## Checkpoint
@@ -129,3 +145,12 @@ Before moving on, verify you can:
 
 → [Edge AI, Physical AI & TinyML](/docs/core-concepts) — understand the concepts  
 → [Project Examples](/docs/projects/overview) — apply your skills in a full build
+
+---
+
+## Bonus Challenge
+
+Combine what you've learned from all three projects:
+
+- [ ] Make the RGB LED color change based on the IMU tilt direction (e.g. red when tilting left, blue when tilting right).
+- [ ] Print the current color name to the Serial Monitor each time it changes.

@@ -85,7 +85,7 @@ const config = {
       footer: {
         style: 'dark',
         links: [],
-        copyright: `Copyright © ${new Date().getFullYear()} Physical AI Bootcamp. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Physical AI Bootcamp.`,
       },
       prism: {
         theme: prismThemes.github,
