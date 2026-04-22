@@ -1,0 +1,82 @@
+---
+sidebar_position: 2
+---
+
+# Bridge Blink
+
+This is your first real Bridge project. Instead of the Arduino blinking on its own in a loop, **Python is now in charge** — it decides when to turn the LED on or off by sending a value (`1` or `0`) across the Bridge. The Arduino just listens and reacts.
+
+This is the key shift: **event-based control** instead of a continuous loop.
+
+---
+
+## How It Works
+
+1. Python calls a function on the Arduino side via the Bridge, passing `1` (ON) or `0` (OFF).
+2. The Arduino receives that call and sets the LED state immediately.
+3. The Arduino's `loop()` is intentionally **empty** — it does nothing on its own. It only acts when Python tells it to.
+
+This pattern is the foundation of how the Python and Arduino sides cooperate in more complex Apps.
+
+---
+
+## The Code
+
+### `main.py` — Python side
+
+```python
+from arduino.app_utils import *
+import time
+
+def loop():
+    # 1. Turn it ON
+    Bridge.call("control_led", 1)
+    time.sleep(1)
+
+    # 2. Turn it OFF
+    Bridge.call("control_led", 0)
+    time.sleep(1)
+
+# Start the loop
+App.run(user_loop=loop)
+```
+
+### `sketch.ino` — Arduino side
+
+```cpp
+#include <Arduino_RouterBridge.h>
+
+// This function receives an integer (1 or 0) from Python
+void control_led(int state) {
+
+  // Clear if/else logic
+  if (state == 1) {
+    digitalWrite(LED_BUILTIN, LOW);  // Turn LED ON (Active Low)
+  }
+  else {
+    digitalWrite(LED_BUILTIN, HIGH); // Turn LED OFF
+  }
+
+}
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  Bridge.begin();
+  Bridge.provide_safe("control_led", control_led);
+}
+
+void loop() {
+  // Bridge runs automatically in the background
+  // Arduino does nothing here — it only acts when Python calls it
+}
+```
+
+---
+
+:::note
+ Event-based vs Continuous Loop
+ Event-based vs Continuous Loop
+In a typical Arduino sketch, logic lives inside `loop()` and runs forever. Here, `loop()` is empty. The Arduino only reacts when Python sends a command via the Bridge. This makes the system more predictable and easier to reason about — Python is the "brain", Arduino is the "muscle".
+:::
+
+---
