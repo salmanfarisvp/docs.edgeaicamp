@@ -75,11 +75,11 @@ const config = {
             label: 'edgeaicamp.in',
             position: 'right',
           },
-          {
-            href: 'https://github.com/salmanfarisvpp',
-            label: 'GitHub',
-            position: 'right',
-          },
+          // {
+          //   href: 'https://github.com/salmanfarisvp/',
+          //   label: 'GitHub',
+          //   position: 'right',
+          // },
         ],
       },
       footer: {
