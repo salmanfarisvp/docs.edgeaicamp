@@ -1,0 +1,106 @@
+---
+sidebar_position: 3
+---
+
+# What is Physical AI?
+
+**Physical AI** refers to AI systems that can perceive and interact with the **physical world** — through sensors that read real-world data (temperature, motion, sound, light) and actuators that take physical action (motors, speakers, displays, valves).
+
+The key insight: Physical AI is defined by *what it connects to*, not *where it runs*. The AI brain can live on the cloud, on an edge server, or directly on the device — as long as it is communicating with the physical world, it qualifies as Physical AI.
+
+---
+
+## How Physical AI Works
+
+```
+Physical World
+      │
+  [Sensors]          ← reads temperature, motion, sound, images…
+      │
+  [AI System]        ← can be cloud, edge server, or on-device
+      │
+  [Actuators]        ← controls motors, alarms, displays, valves…
+      │
+Physical World
+```
+
+Even a cloud-hosted AI that only reads sensor data (without controlling anything) still counts as Physical AI — it is grounded in real-world inputs rather than purely digital ones.
+
+---
+
+## TinyML vs. Edge AI vs. Physical AI
+
+These three terms are often confused. Here is how they differ:
+
+| | **TinyML** | **Edge AI** | **Physical AI** |
+|---|---|---|---|
+| **What it means** | ML running on a tiny microcontroller | AI running on or near the device | AI that interacts with the physical world |
+| **Where AI runs** | On the microcontroller itself | On the device / local server | Anywhere — cloud, edge, or on-device |
+| **Internet needed?** | No | Usually not | Optional |
+| **Sensors / Actuators** | Yes (core to TinyML) | Usually yes | Yes — this is the defining feature |
+| **Compute power** | Milliwatts, kilobytes of RAM | Moderate (Raspberry Pi, Jetson, phone) | Varies widely |
+| **Example** | Keyword detection on Arduino | Face recognition on a Jetson Nano | A cloud robot that reads a camera and moves an arm |
+
+### Quick way to remember
+
+- **TinyML** → *tiny device, ML runs locally*
+- **Edge AI** → *AI runs close to the data source, not in the cloud*
+- **Physical AI** → *AI with eyes, ears, and hands in the real world — regardless of where the brain lives*
+
+---
+
+## Physical AI Does Not Have to Run on the Edge
+
+This is an important distinction. Consider a smart irrigation system:
+
+- A **soil moisture sensor** sends readings over Wi-Fi to a cloud server
+- A **cloud AI model** analyses the data and decides whether to water
+- It sends a command back to a **motorised valve** (actuator) that opens or closes
+
+This is Physical AI — it reads the physical world and acts on it — but the AI itself runs entirely in the cloud. No edge device, no microcontroller required.
+
+---
+
+## Real-World Examples
+
+| Example | Sensors | Actuators | Where AI Runs |
+|---|---|---|---|
+| Smart thermostat | Temperature sensor | Heating/cooling relay | Cloud or on-device |
+| Self-driving car | Camera, LiDAR, radar | Steering, brakes, throttle | On-vehicle (edge) |
+| Industrial robot arm | Vision camera, force sensor | Servo motors | On-device or edge server |
+| Remote weather station | Temp, humidity, wind | Satellite uplink | Cloud |
+| Voice assistant (Alexa) | Microphone | Speaker | Cloud |
+| TinyML gesture wristband | IMU (accelerometer) | Haptic motor | On-device (TinyML) |
+
+---
+
+## Why Physical AI Matters
+
+### Bridges the Digital–Physical Gap
+Most AI today lives in the digital world — processing text, images, and numbers. Physical AI closes the loop between software intelligence and real-world action.
+
+### Enables Autonomous Systems
+Robots, drones, autonomous vehicles, and smart buildings all depend on Physical AI to sense their environment and respond in real time.
+
+### Expands Where AI Can Run
+Because the AI can live anywhere — cloud, edge, or device — Physical AI enables use cases where the sensor/actuator node is cheap and simple, while the intelligence stays in a powerful server.
+
+---
+
+## How TinyML Fits Inside Physical AI
+
+TinyML is a *subset* of Physical AI. When you run a machine learning model directly on a microcontroller like the Arduino Nicla Q, you get the benefits of Physical AI (real-world sensing and actuation) *plus* the benefits of on-device inference: no internet required, near-zero latency, and ultra-low power consumption.
+
+```
+Physical AI  (broad — AI connected to the real world)
+  └── Edge AI  (AI runs near the data source)
+        └── TinyML  (AI runs on a tiny microcontroller)
+```
+
+---
+
+## Next Steps
+
+→ [What is Edge AI?](/docs/fundamentals/what-is-edge-ai) — understand where AI runs at the edge  
+→ [What is Machine Learning?](/docs/fundamentals/what-is-ml) — the foundations of ML  
+→ [Workshop Overview](/docs/getting-started/workshop-overview) — see the full agenda

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # What is Edge AI?
@@ -12,7 +12,7 @@ sidebar_position: 1
 
 | | Cloud AI | Edge AI |
 |---|---|---|
-| **Where it runs** | Remote server | On the device itself |
+| **Where it runs** | Remote server | On the device/near the device itself |
 | **Latency** | 100 ms – several seconds | < 10 ms (real-time) |
 | **Internet** | Required | Not required |
 | **Privacy** | Data leaves the device | Data stays on device |
@@ -39,7 +39,6 @@ A TinyML model on a microcontroller can run for **months on a coin cell battery*
 
 ## Where is Edge AI Used?
 
-- **Smart speakers** — wake-word detection runs on-device; only triggered audio goes to the cloud
 - **Industrial predictive maintenance** — vibration anomaly detection on factory floors
 - **Healthcare wearables** — ECG classification, fall detection
 - **Agriculture** — soil sensor analysis, pest detection with cameras
@@ -48,27 +47,7 @@ A TinyML model on a microcontroller can run for **months on a coin cell battery*
 
 ---
 
-## The Edge AI Stack
-
-```
-┌──────────────────────────────────┐
-│         Your Application         │
-├──────────────────────────────────┤
-│     Inference Runtime (TFLM)     │
-├──────────────────────────────────┤
-│    Trained & Quantized Model     │
-├──────────────────────────────────┤
-│   Sensors / Actuators / RTOS     │
-├──────────────────────────────────┤
-│     Microcontroller Hardware     │
-└──────────────────────────────────┘
-```
-
-In this workshop you'll work at every layer of this stack — from connecting sensors to training and deploying models.
-
----
-
 ## Next Steps
 
 → [Workshop Overview](/docs/getting-started/workshop-overview) — see the full agenda  
-→ [Arduino Q Setup](/docs/arduino-q/overview) — get your hardware ready
+→ [Arduino Q Setup](/docs/arduino-q/overview) — get your hardware ready  

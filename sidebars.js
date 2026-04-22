@@ -13,23 +13,27 @@ const sidebars = {
       label: '🚀 Getting Started',
       collapsed: false,
       items: [
-        'getting-started/what-is-edge-ai',
         'getting-started/workshop-overview',
       ],
     },
     {
       type: 'category',
-      label: '🔌 Arduino Q Setup',
+      label: '📚 Fundamentals',
+      collapsed: false,
+      items: [
+        'fundamentals/what-is-ml',
+        'fundamentals/what-is-edge-ai',
+        'fundamentals/what-is-physical-ai',
+      ],
+    },
+    {
+      type: 'category',
+      label: '🔌 Arduino Q',
       items: [
         'arduino-q/overview',
         'arduino-q/installation',
         'arduino-q/first-project',
       ],
-    },
-    {
-      type: 'doc',
-      id: 'core-concepts',
-      label: '🧠 Edge AI, Physical AI & TinyML',
     },
     {
       type: 'category',
