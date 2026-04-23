@@ -60,9 +60,10 @@ const sidebars = {
     },
     {
       type: 'category',
-      label: '🛠️ Project Examples',
+      label: '🛠️ Projects',
       items: [
         'projects/overview',
+        'projects/documenting-your-project',
       ],
     },
     {
