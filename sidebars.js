@@ -64,6 +64,7 @@ const sidebars = {
       items: [
         'projects/overview',
         'projects/documenting-your-project',
+        'projects/smart-camera-intruder-alert',
       ],
     },
     {

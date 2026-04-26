@@ -1,0 +1,244 @@
+---
+sidebar_position: 3
+---
+
+# Smart Camera Intruder Alert System
+
+A camera-based vision project that detects the presence of a person (or unauthorised object) in a monitored area and triggers a local alert. The model runs entirely on the Arduino Q — no cloud, no internet required.
+
+```
+Camera → Image Classifier (Edge Impulse) → Decision (Python) → Alert (Buzzer / LED)
+```
+
+---
+
+## The Idea
+
+Mount a camera in a fixed position — pointing at a door, window, or restricted area. The model continuously classifies the camera feed. When it detects a person (or any class you define as an intrusion), it signals the Arduino side via the Bridge to trigger a buzzer or LED alert.
+
+This is a real-world use case: on-device vision for security without sending data to the cloud.
+
+---
+
+## What You'll Build
+
+| Component | Role |
+|---|---|
+| USB Camera | Captures image frames |
+| Edge Impulse Image Classifier | Detects person vs. no person |
+| Python (`main.py`) | Runs inference, makes the decision |
+| Bridge | Sends alert signal to the MCU |
+| Buzzer or LED | Physical alert output |
+
+---
+
+## Hardware Required
+
+- Arduino UNO Q
+- USB Camera (compatible with Arduino App Lab)
+- Buzzer or LED + resistor
+- USB-C cable
+
+---
+
+## How It Works
+
+1. **Camera captures frames** — Python reads frames from the USB camera continuously.
+2. **Model runs inference** — the Edge Impulse image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `empty`).
+3. **Decision logic in Python** — if the `person` class confidence exceeds a threshold (e.g. 0.8), Python calls the Arduino via the Bridge.
+4. **Arduino triggers the alert** — the MCU receives the signal and activates the buzzer or LED.
+5. **Alert resets** — when no person is detected for a set number of frames, the alert is cleared.
+
+---
+
+## Building the Model on Edge Impulse
+
+### 1. Collect Data
+
+You need two classes of images:
+
+- **`person`** — photos of a person in the camera's field of view (different angles, distances, lighting).
+
+Collect at least **40–50 images per class**(if you have multiple class). Use your laptop camera or mobile phone QR method in Edge Impulse Studio.
+
+### 2. Create the Impulse
+
+- **Input block:** Image, 96×96 px (grayscale or RGB)
+- **Processing block:** Image (flatten or use transfer learning)
+- **Learning block:** Transfer Learning (MobileNetV1 96×96) — recommended for image classification on edge
+
+### 3. Train and Test
+
+- Target **85%+ accuracy** on the test set.
+- Check the confusion matrix — make sure `person` is not being confused with `empty`.
+- Use **Live classification** to test with your camera before deploying.
+
+### 4. Deploy
+
+Export as an **Arduino library** and import it into Arduino App Lab.
+
+---
+
+## The Code
+
+### `main.py` — Python side
+
+```python
+from arduino.app_utils import *
+from arduino.app_utils import App
+from arduino.app_bricks.web_ui import WebUI
+from arduino.app_bricks.video_imageclassification import VideoImageClassification
+from arduino.app_peripherals.camera import Camera
+from arduino.app_bricks.telegram_bot import TelegramBot
+from datetime import datetime, UTC
+from io import BytesIO
+from PIL import Image
+import urllib.request
+import requests
+import json
+import os
+
+
+ui = WebUI()
+
+# Initialize camera
+camera = Camera()
+
+# Pass camera to stream.
+# debounce_sec=5.0 replaces the need for sleep(5). It tells the AI to wait 5 seconds before triggering again.
+detection_stream = VideoImageClassification(camera=camera, confidence=0.5, debounce_sec=5.0)
+
+bot = TelegramBot()
+CHAT_ID = 'YOUR_TELEGRAM_CHAT_ID' 
+
+# Safely handle the threshold override so it doesn't crash on startup
+
+def person_detected():
+    print("⚠️ Person detected! Processing numpy array...")
+    
+    try:
+        captured_frame = camera.capture()
+        
+        if captured_frame is not None:
+            img = Image.fromarray(captured_frame)
+            
+            # Note: If your photo colors look weird (e.g., red and blue are swapped), 
+            # uncomment the following line to fix OpenCV's default BGR format:
+            # img = img.convert("RGB")
+            
+            output = BytesIO()
+            img.save(output, format="JPEG")
+            image_bytes = output.getvalue()
+            
+            # 1. Try sending the photo without the 'photo=' keyword
+            try:
+                bot.send_photo(CHAT_ID, image_bytes, caption="🚨 Intruder Detected!")
+                Bridge.call("control_led", 1)
+                print("Photo sent to Telegram successfully (using wrapper)!")
+                
+            except Exception as e:
+                print(f"Wrapper failed ({e}). Attempting direct Telegram API call...")
+                
+                # 2. Bulletproof Fallback: Send it directly to Telegram bypassing the wrapper
+                try:
+                    token = os.environ.get("TELEGRAM_BOT_TOKEN")
+                    url = f"https://api.telegram.org/bot{token}/sendPhoto"
+                    
+                    files = {'photo': ('intruder.jpg', image_bytes, 'image/jpeg')}
+                    data = {'chat_id': CHAT_ID, 'caption': "🚨 Intruder Detected!"}
+                    
+                    response = requests.post(url, files=files, data=data)
+                    
+                    if response.status_code == 200:
+                        print("Photo sent successfully via direct API!")
+                    else:
+                        print(f"Direct API failed: {response.text}")
+                        bot.send_message(CHAT_ID, "🚨 Intruder Detected! (Photo capture succeeded, but upload failed)")
+                        
+                except Exception as api_e:
+                    print(f"Direct API exception: {api_e}")
+                    bot.send_message(CHAT_ID, "🚨 Intruder Detected! (Network upload failed)")
+                    
+        else:
+            print("camera.capture() returned None.")
+            bot.send_message(CHAT_ID, "🚨 Intruder Detected! (Camera capture returned empty)")
+            
+    except Exception as e:
+        print(f"Capture method error: {e}")
+        bot.send_message(CHAT_ID, f"🚨 Intruder Detected! (Camera error: {e})")
+
+
+
+detection_stream.on_detect("person", person_detected)
+
+def send_detections_to_ui(classifications: dict):
+    if len(classifications) == 0:
+        return
+        
+    entries = []
+    for key, value in classifications.items():
+        entry = {
+            "content": key,
+            "confidence": value,
+            "timestamp": datetime.now(UTC).isoformat()
+        }
+        entries.append(entry)    
+    
+    if len(entries) > 0:
+        msg = json.dumps(entries)
+        ui.send_message("classifications", message=msg)
+
+detection_stream.on_detect_all(send_detections_to_ui)
+
+App.run()
+```
+
+### `sketch.ino` — Arduino side
+
+```cpp
+#include <Arduino_RouterBridge.h>
+
+#define BUZZER_PIN 5
+
+void trigger_alert(int state) {
+  if (state == 1) {
+    digitalWrite(BUZZER_PIN, HIGH); // Alert ON
+  } else {
+    digitalWrite(BUZZER_PIN, LOW);  // Alert OFF
+  }
+}
+
+void setup() {
+  pinMode(BUZZER_PIN, OUTPUT);
+  Bridge.begin();
+  Bridge.provide_safe("trigger_alert", trigger_alert);
+}
+
+void loop() {
+  // Waits for Python to call trigger_alert via Bridge
+}
+```
+
+:::note Event-based Alert
+The Arduino does nothing on its own — it only fires when Python sends a signal via the Bridge. This keeps the MCU free and responsive.
+:::
+
+---
+
+## Ideas to Extend
+
+- Add a **timestamp log** in Python each time an intrusion is detected.
+- Send an **email or push notification** using a Python library when a person is detected.
+- Add a **third class** (e.g. `animal`) to distinguish between types of intrusions.
+- Stream the camera feed to a **web UI** served from the Arduino Q.
+
+---
+
+## Your Turn
+
+- [ ] Collect at least **40 images** for each class (`person` and `empty`).
+- [ ] Train a model in Edge Impulse and hit **85%+ test accuracy**.
+- [ ] Deploy the model as an Arduino library.
+- [ ] Wire up a buzzer or LED to the Arduino Q.
+- [ ] Run the full system and verify the alert triggers when you step in front of the camera.
+- [ ] Document each step on [Arduino Project Hub](https://projecthub.arduino.cc/).
