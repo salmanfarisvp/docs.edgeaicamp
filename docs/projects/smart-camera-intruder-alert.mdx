@@ -104,12 +104,12 @@ ui = WebUI()
 # Initialize camera
 camera = Camera()
 
-# Pass camera to stream.
+# Pass camera to stream. 
 # debounce_sec=5.0 replaces the need for sleep(5). It tells the AI to wait 5 seconds before triggering again.
 detection_stream = VideoImageClassification(camera=camera, confidence=0.5, debounce_sec=5.0)
 
 bot = TelegramBot()
-CHAT_ID = 'YOUR_TELEGRAM_CHAT_ID' 
+CHAT_ID = 'CHAT_ID_HERE' 
 
 # Safely handle the threshold override so it doesn't crash on startup
 
@@ -167,9 +167,11 @@ def person_detected():
         print(f"Capture method error: {e}")
         bot.send_message(CHAT_ID, f"🚨 Intruder Detected! (Camera error: {e})")
 
-
+def person_not_detected():
+    Bridge.call("control_led", 0)
 
 detection_stream.on_detect("person", person_detected)
+detection_stream.on_detect("non person", person_not_detected)
 
 def send_detections_to_ui(classifications: dict):
     if len(classifications) == 0:
@@ -197,25 +199,38 @@ App.run()
 
 ```cpp
 #include <Arduino_RouterBridge.h>
+#define buzzer 10
 
-#define BUZZER_PIN 5
-
-void trigger_alert(int state) {
+// This function receives an integer (1 or 0) from Python
+void control_led(int state) {
+  
+  // Clear if/else logic
   if (state == 1) {
-    digitalWrite(BUZZER_PIN, HIGH); // Alert ON
-  } else {
-    digitalWrite(BUZZER_PIN, LOW);  // Alert OFF
+    digitalWrite(LED_BUILTIN, LOW);  // Turn LED ON (Active Low)
+    digitalWrite(buzzer, HIGH);
+    digital
+    Monitor.println("LED is ON");
+    
+  } 
+  else {
+    digitalWrite(LED_BUILTIN, HIGH); // Turn LED OFF
+    Monitor.println("LED is OFF");
+    digitalWrite(buzzer, LOW);
   }
+
 }
 
 void setup() {
-  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT)
+  pinMode(10,OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH); // Turn LED OFF (Active Low)
+  digitalWrite(buzzer, LOW);
   Bridge.begin();
-  Bridge.provide_safe("trigger_alert", trigger_alert);
+  Bridge.provide_safe("control_led", control_led);
 }
 
 void loop() {
-  // Waits for Python to call trigger_alert via Bridge
+  // Bridge runs automatically in the background
 }
 ```
 
