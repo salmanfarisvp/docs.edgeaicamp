@@ -4,10 +4,10 @@ sidebar_position: 3
 
 # Smart Camera Intruder Alert System
 
-A camera-based vision project that detects the presence of a person (or unauthorised object) in a monitored area and triggers a local alert. The model runs entirely on the Arduino Q: no cloud, no internet required.
+A camera-based vision project that detects the presence of a person (or unauthorised object) in a monitored area and triggers a local alert, plus a Telegram photo. The classifier runs on the Arduino Q. Telegram alerts need internet on the board.
 
 ```
-Camera → Image Classifier (Edge Impulse) → Decision (Python) → Alert (Buzzer / LED)
+    Camera → Image Classifier → Decision (Python) → Alert (Buzzer / LED + Telegram)
 ```
 
 ---
@@ -25,10 +25,11 @@ This is a real-world use case: on-device vision for security without sending dat
 | Component | Role |
 |---|---|
 | USB Camera | Captures image frames |
-| Edge Impulse Image Classifier | Detects person vs. no person |
+| Image Classifier | Detects person vs. no person |
 | Python (`main.py`) | Runs inference, makes the decision |
 | Bridge | Sends alert signal to the MCU |
 | Buzzer or LED | Physical alert output |
+| Telegram Bot | Sends a photo alert to your phone |
 
 ---
 
@@ -38,16 +39,72 @@ This is a real-world use case: on-device vision for security without sending dat
 - USB Camera (compatible with Arduino App Lab)
 - Buzzer or LED + resistor
 - USB-C cable
+- Wi-Fi (needed for Telegram alerts)
+- A Telegram account (phone or desktop)
+
+---
+
+## Starter App: download, import, and Telegram token
+
+Use this ready-made App Lab project instead of copying the code by hand:
+
+**[Download Intruder Alert via Telegram (`.zip`)](./source/project-intruder-alert-via-telegram.zip)**
+
+Leave the file zipped. App Lab imports the `.zip` as-is.
+
+### 1. Import the App into Arduino App Lab
+
+1. Download the `.zip` file above.
+2. Open **Arduino App Lab** and wait until your UNO Q is detected.
+3. Open any App, or go to **My Apps**.
+4. Click the **arrow (▼)** next to the App name (top left).
+5. Choose **Import App**.
+6. Drag the zip into the import area, or click **Import from computer** and select `project-intruder-alert-via-telegram.zip`.
+7. Click **Open**. You should see **Intruder Alert via Telegram** in **My Apps**.
+
+### 2. Create a Telegram bot and copy the token
+
+1. Open Telegram and search for **[@BotFather](https://t.me/BotFather)**.
+2. Send `/newbot`.
+3. Choose a display name (for example `Intruder Alert`).
+4. Choose a username that ends with `bot` (for example `my_intruder_alert_bot`).
+5. BotFather replies with an API token that looks like `123456789:AA...`. Copy it.
+
+:::warning
+Treat the token like a password. Anyone with it can control your bot. Do not commit it to Git or paste it into public docs.
+:::
+
+### 3. Paste the token into the Telegram Bot Brick
+
+The token is **not** stored in `main.py`. App Lab keeps it in the **Telegram Bot** Brick as `TELEGRAM_BOT_TOKEN`.
+
+1. Open the imported **Intruder Alert via Telegram** App.
+2. In the left panel, under **Bricks**, click **Telegram Bot**.
+3. Click **Brick Configuration**.
+4. Paste your token into the **token** field.
+5. Close the panel so the App saves the setting.
+
+### 4. Run the App and register your chat
+
+1. Plug in the USB camera. Wire the buzzer or LED as in the hardware list.
+2. Connect the UNO Q to Wi-Fi (Telegram will not send without internet).
+3. Click **Run** in App Lab.
+4. In Telegram, open **your** new bot (not BotFather) and send `/start`.
+5. The bot replies that this chat is registered for alerts.
+6. Step in front of the camera: you should get a photo (`🚨 Intruder Detected!`) and the local buzzer/LED should fire.
+7. Send `/stop` if you want this chat to stop receiving alerts.
+
+You do not need to paste a chat ID into the code. After `/start`, the App saves it automatically.
 
 ---
 
 ## How It Works
 
 1. **Camera captures frames**: Python reads frames from the USB camera continuously.
-2. **Model runs inference**: the Edge Impulse image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `empty`).
-3. **Decision logic in Python**: if the `person` class confidence exceeds a threshold (e.g. 0.8), Python calls the Arduino via the Bridge.
+2. **Model runs inference**: the image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `empty`).
+3. **Decision logic in Python**: if the `person` class confidence exceeds a threshold, Python calls the Arduino via the Bridge and sends a Telegram photo.
 4. **Arduino triggers the alert**: the MCU receives the signal and activates the buzzer or LED.
-5. **Alert resets**: when no person is detected for a set number of frames, the alert is cleared.
+5. **Alert resets**: when no person is detected, the local alert is cleared. Telegram photos are rate-limited so the bot is not spammed.
 
 ---
 
@@ -84,115 +141,210 @@ Export as an **Arduino library** and import it into Arduino App Lab.
 ### `main.py`: Python side
 
 ```python
-from arduino.app_utils import *
-from arduino.app_utils import App
+from arduino.app_utils import App, Bridge
 from arduino.app_bricks.web_ui import WebUI
 from arduino.app_bricks.video_imageclassification import VideoImageClassification
 from arduino.app_peripherals.camera import Camera
-from arduino.app_bricks.telegram_bot import TelegramBot
+from arduino.app_bricks.telegram_bot import TelegramBot, Sender, Message
+from arduino.app_utils.image.adjustments import compress_to_jpeg
 from datetime import datetime, UTC
-from io import BytesIO
-from PIL import Image
-import urllib.request
-import requests
 import json
 import os
+import time
 
 
 ui = WebUI()
 
-# Initialize camera
-camera = Camera()
+camera = Camera(resolution=(640, 480), fps=30)
+detection_stream = VideoImageClassification(camera=camera, confidence=0.5, debounce_sec=1.0)
 
-# Pass camera to stream. 
-# debounce_sec=5.0 replaces the need for sleep(5). It tells the AI to wait 5 seconds before triggering again.
-detection_stream = VideoImageClassification(camera=camera, confidence=0.5, debounce_sec=5.0)
+def on_override_threshold(sid, threshold):
+    try:
+        detection_stream.override_threshold(threshold)
+    except Exception as e:
+        print(f"Could not override threshold: {e}")
+
+ui.on_message("override_th", on_override_threshold)
 
 bot = TelegramBot()
-CHAT_ID = 'CHAT_ID_HERE' 
+ALERT_CHAT_FILE = os.path.join(os.path.dirname(__file__), "alert_chat_id.txt")
 
-# Safely handle the threshold override so it doesn't crash on startup
+# Chat ID is learned from Telegram (/start), not hardcoded.
+alert_chat_id = None
 
-def person_detected():
-    print("⚠️ Person detected! Processing numpy array...")
-    
+# Only act when a person appears or leaves, so Telegram is not spammed.
+person_present = False
+pending_alert = False
+
+# After sending one photo, wait this many seconds before sending another.
+IMAGE_COOLDOWN_SEC = 30
+last_photo_time = 0.0
+
+
+def load_alert_chat_id():
+    try:
+        with open(ALERT_CHAT_FILE, "r", encoding="utf-8") as f:
+            value = f.read().strip()
+        return int(value) if value else None
+    except (FileNotFoundError, ValueError, OSError):
+        return None
+
+
+def save_alert_chat_id(chat_id):
+    try:
+        if chat_id is None:
+            os.remove(ALERT_CHAT_FILE)
+            return
+        with open(ALERT_CHAT_FILE, "w", encoding="utf-8") as f:
+            f.write(str(chat_id))
+    except FileNotFoundError:
+        pass
+    except OSError as e:
+        print(f"Could not save alert chat id: {e}")
+
+
+alert_chat_id = load_alert_chat_id()
+
+
+def notify_text(text: str):
+    if alert_chat_id is None:
+        print(f"No Telegram chat registered. Open the bot and send /start. ({text})")
+        return False
+    return bot.send_message(alert_chat_id, text)
+
+
+def remember_chat(sender: Sender) -> bool:
+    """Save this Telegram chat for later alerts. Returns True if it is a new chat."""
+    global alert_chat_id
+    is_new = alert_chat_id != sender.chat_id
+    alert_chat_id = sender.chat_id
+    if is_new:
+        save_alert_chat_id(alert_chat_id)
+        print(f"Telegram chat registered: {alert_chat_id}")
+    return is_new
+
+
+def send_pending_photo_if_needed():
+    global pending_alert
+    if person_present or pending_alert:
+        pending_alert = False
+        send_intruder_photo()
+
+
+def register_chat(sender: Sender, message: Message):
+    remember_chat(sender)
+    sender.reply("This chat is registered for intruder alerts. Send /stop to unregister.")
+    send_pending_photo_if_needed()
+
+
+def unregister_chat(sender: Sender, message: Message):
+    global alert_chat_id
+    alert_chat_id = None
+    save_alert_chat_id(None)
+    sender.reply("This chat will no longer receive intruder alerts.")
+
+
+bot.add_command("start", register_chat, "Register this chat for alerts")
+bot.add_command("stop", unregister_chat, "Stop receiving alerts")
+
+
+def set_alarm(on: bool):
+    try:
+        Bridge.call("control_led", 1 if on else 0)
+    except Exception as e:
+        print(f"Bridge LED/buzzer call failed: {e}")
+
+
+def send_intruder_photo():
+    global last_photo_time
+
+    if alert_chat_id is None:
+        print("Person detected, but no Telegram chat is registered. Send /start to the bot.")
+        return
+
+    now = time.monotonic()
+    elapsed = now - last_photo_time
+    if elapsed < IMAGE_COOLDOWN_SEC:
+        return
+
+    # Stamp immediately so the next 30s of detections cannot burst photos.
+    last_photo_time = now
+    print("Sending intruder photo")
+
     try:
         captured_frame = camera.capture()
-        
-        if captured_frame is not None:
-            img = Image.fromarray(captured_frame)
-            
-            # Note: If your photo colors look weird (e.g., red and blue are swapped), 
-            # uncomment the following line to fix OpenCV's default BGR format:
-            # img = img.convert("RGB")
-            
-            output = BytesIO()
-            img.save(output, format="JPEG")
-            image_bytes = output.getvalue()
-            
-            # 1. Try sending the photo without the 'photo=' keyword
-            try:
-                bot.send_photo(CHAT_ID, image_bytes, caption="🚨 Intruder Detected!")
-                Bridge.call("control_led", 1)
-                print("Photo sent to Telegram successfully (using wrapper)!")
-                
-            except Exception as e:
-                print(f"Wrapper failed ({e}). Attempting direct Telegram API call...")
-                
-                # 2. Bulletproof Fallback: Send it directly to Telegram bypassing the wrapper
-                try:
-                    token = os.environ.get("TELEGRAM_BOT_TOKEN")
-                    url = f"https://api.telegram.org/bot{token}/sendPhoto"
-                    
-                    files = {'photo': ('intruder.jpg', image_bytes, 'image/jpeg')}
-                    data = {'chat_id': CHAT_ID, 'caption': "🚨 Intruder Detected!"}
-                    
-                    response = requests.post(url, files=files, data=data)
-                    
-                    if response.status_code == 200:
-                        print("Photo sent successfully via direct API!")
-                    else:
-                        print(f"Direct API failed: {response.text}")
-                        bot.send_message(CHAT_ID, "🚨 Intruder Detected! (Photo capture succeeded, but upload failed)")
-                        
-                except Exception as api_e:
-                    print(f"Direct API exception: {api_e}")
-                    bot.send_message(CHAT_ID, "🚨 Intruder Detected! (Network upload failed)")
-                    
-        else:
-            print("camera.capture() returned None.")
-            bot.send_message(CHAT_ID, "🚨 Intruder Detected! (Camera capture returned empty)")
-            
+        if captured_frame is None:
+            notify_text("🚨 Intruder Detected! (Camera capture returned empty)")
+            return
+
+        jpeg_frame = compress_to_jpeg(captured_frame)
+        if jpeg_frame is None:
+            notify_text("🚨 Intruder Detected! (Could not encode photo)")
+            return
+
+        image_bytes = jpeg_frame.tobytes()
+        if bot.send_photo(alert_chat_id, image_bytes, caption="🚨 Intruder Detected!"):
+            print("Photo sent to Telegram successfully")
+            return
+
+        print("Telegram photo send failed, sending text instead")
+        notify_text("🚨 Intruder Detected! (Photo upload failed)")
+
     except Exception as e:
-        print(f"Capture method error: {e}")
-        bot.send_message(CHAT_ID, f"🚨 Intruder Detected! (Camera error: {e})")
+        print(f"Capture/send error: {e}")
+        notify_text(f"🚨 Intruder Detected! (Camera error: {e})")
+
+
+def person_detected():
+    global person_present, pending_alert
+    if not person_present:
+        person_present = True
+        print("Person detected")
+        set_alarm(True)
+
+    if alert_chat_id is None:
+        pending_alert = True
+        print("Person detected, but no Telegram chat is registered. Send /start to the bot.")
+        return
+
+    # Keep trying while the person stays in view. send_intruder_photo()
+    # sends immediately, then only again after IMAGE_COOLDOWN_SEC.
+    send_intruder_photo()
+
 
 def person_not_detected():
-    Bridge.call("control_led", 0)
+    global person_present
+    if not person_present:
+        return
+    person_present = False
+    print("Person left")
+    set_alarm(False)
+
 
 detection_stream.on_detect("person", person_detected)
 detection_stream.on_detect("non person", person_not_detected)
 
+
 def send_detections_to_ui(classifications: dict):
     if len(classifications) == 0:
         return
-        
+
     entries = []
     for key, value in classifications.items():
-        entry = {
+        entries.append({
             "content": key,
             "confidence": value,
             "timestamp": datetime.now(UTC).isoformat()
-        }
-        entries.append(entry)    
-    
+        })
+
     if len(entries) > 0:
-        msg = json.dumps(entries)
-        ui.send_message("classifications", message=msg)
+        ui.send_message("classifications", message=json.dumps(entries))
+
 
 detection_stream.on_detect_all(send_detections_to_ui)
 
 App.run()
+
 ```
 
 ### `sketch.ino`: Arduino side
@@ -203,35 +355,34 @@ App.run()
 
 // This function receives an integer (1 or 0) from Python
 void control_led(int state) {
-  
-  // Clear if/else logic
+
   if (state == 1) {
     digitalWrite(LED_BUILTIN, LOW);  // Turn LED ON (Active Low)
     digitalWrite(buzzer, HIGH);
-    digital
     Monitor.println("LED is ON");
-    
-  } 
-  else {
+  } else {
     digitalWrite(LED_BUILTIN, HIGH); // Turn LED OFF
-    Monitor.println("LED is OFF");
     digitalWrite(buzzer, LOW);
+    Monitor.println("LED is OFF");
   }
 
 }
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT)
-  pinMode(10,OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(buzzer, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH); // Turn LED OFF (Active Low)
   digitalWrite(buzzer, LOW);
+
   Bridge.begin();
+  Monitor.begin();
   Bridge.provide_safe("control_led", control_led);
 }
 
 void loop() {
   // Bridge runs automatically in the background
 }
+
 ```
 
 :::note
@@ -252,7 +403,10 @@ The Arduino does nothing on its own: it only fires when Python sends a signal vi
 
 ## Your Turn
 
-- [ ] Collect at least **40 images** for each class (`person` and `empty`).
+- [ ] Download the **Intruder Alert via Telegram** `.zip` and import it in App Lab.
+- [ ] Create a Telegram bot with **@BotFather** and paste the token into the **Telegram Bot** Brick.
+- [ ] Send `/start` to your bot, then verify a photo arrives when you step in front of the camera.
+- [ ] Collect at least **40 images** for each class (`person` and `empty`) if you train your own model.
 - [ ] Train a model in Edge Impulse and hit **85%+ test accuracy**.
 - [ ] Deploy the model as an Arduino library.
 - [ ] Wire up a buzzer or LED to the Arduino Q.
