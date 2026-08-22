@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Bridge 02: Blink LED with Bridge
 
-This is your first real Bridge project. Instead of the Arduino blinking on its own in a loop, **Python is now in charge** — it decides when to turn the LED on or off by sending a value (`1` or `0`) across the Bridge. The Arduino just listens and reacts.
+This is your first real Bridge project. Instead of the Arduino blinking on its own in a loop, **Python is now in charge**: it decides when to turn the LED on or off by sending a value (`1` or `0`) across the Bridge. The Arduino just listens and reacts.
 
 This is the key shift: **event-based control** instead of a continuous loop.
 
@@ -14,7 +14,7 @@ This is the key shift: **event-based control** instead of a continuous loop.
 
 1. Python calls a function on the Arduino side via the Bridge, passing `1` (ON) or `0` (OFF).
 2. The Arduino receives that call and sets the LED state immediately.
-3. The Arduino's `loop()` is intentionally **empty** — it does nothing on its own. It only acts when Python tells it to.
+3. The Arduino's `loop()` is intentionally **empty**: it does nothing on its own. It only acts when Python tells it to.
 
 This pattern is the foundation of how the Python and Arduino sides cooperate in more complex Apps.
 
@@ -22,7 +22,7 @@ This pattern is the foundation of how the Python and Arduino sides cooperate in 
 
 ## The Code
 
-### `main.py` — Python side
+### `main.py`: Python side
 
 ```python
 from arduino.app_utils import *
@@ -41,7 +41,7 @@ def loop():
 App.run(user_loop=loop)
 ```
 
-### `sketch.ino` — Arduino side
+### `sketch.ino`: Arduino side
 
 ```cpp
 #include <Arduino_RouterBridge.h>
@@ -67,7 +67,7 @@ void setup() {
 
 void loop() {
   // Bridge runs automatically in the background
-  // Arduino does nothing here — it only acts when Python calls it
+  // Arduino does nothing here: it only acts when Python calls it
 }
 ```
 
@@ -76,7 +76,7 @@ void loop() {
 :::note
  Event-based vs Continuous Loop
  Event-based vs Continuous Loop
-In a typical Arduino sketch, logic lives inside `loop()` and runs forever. Here, `loop()` is empty. The Arduino only reacts when Python sends a command via the Bridge. This makes the system more predictable and easier to reason about — Python is the "brain", Arduino is the "muscle".
+In a typical Arduino sketch, logic lives inside `loop()` and runs forever. Here, `loop()` is empty. The Arduino only reacts when Python sends a command via the Bridge. This makes the system more predictable and easier to reason about: Python is the "brain", Arduino is the "muscle".
 :::
 
 ---

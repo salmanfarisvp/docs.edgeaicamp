@@ -10,20 +10,20 @@ This exercise is a continuation of the Bridge Blink exercise. In this exercise, 
 
 ## How It Works
 
-1. **Python constructs a message** — a plain string (`"Hello world"`) is defined on the MPU (Linux) side.
-2. **Python prints it locally** — `print()` outputs it to the App Lab console so you can confirm what's being sent.
-3. **Python calls the Arduino** — `Bridge.call("receive_message", message)` sends the string across the Bridge to the Arduino, triggering the `receive_message` function registered on the MCU side.
-4. **Arduino receives it** — the `receive_message(String msg)` function fires with the string as its argument.
-5. **Arduino prints it to the shared Monitor** — `Monitor.println(msg)` outputs it to the shared console, so you can see it arriving on the Arduino side.
-6. **Arduino does nothing else** — `loop()` is empty. The MCU only acts when Python tells it to.
+1. **Python constructs a message**: a plain string (`"Hello world"`) is defined on the MPU (Linux) side.
+2. **Python prints it locally**: `print()` outputs it to the App Lab console so you can confirm what's being sent.
+3. **Python calls the Arduino**: `Bridge.call("receive_message", message)` sends the string across the Bridge to the Arduino, triggering the `receive_message` function registered on the MCU side.
+4. **Arduino receives it**: the `receive_message(String msg)` function fires with the string as its argument.
+5. **Arduino prints it to the shared Monitor**: `Monitor.println(msg)` outputs it to the shared console, so you can see it arriving on the Arduino side.
+6. **Arduino does nothing else**: `loop()` is empty. The MCU only acts when Python tells it to.
 
-The key idea: **data flows one way here — from MPU to MCU**. Python is the sender, Arduino is the receiver. In later exercises we'll flip this and read data back from the Arduino.
+The key idea: **data flows one way here: from MPU to MCU**. Python is the sender, Arduino is the receiver. In later exercises we'll flip this and read data back from the Arduino.
 
 ---
 
 ## The Code
 
-### `main.py` — Python side
+### `main.py`: Python side
 
 ```python
 from arduino.app_utils import *
@@ -43,7 +43,7 @@ def loop():
 App.run(user_loop=loop)
 ```
 
-### `sketch.ino` — Arduino side
+### `sketch.ino`: Arduino side
 
 ```cpp
 #include <Arduino_RouterBridge.h>
@@ -69,7 +69,7 @@ void loop() {}
 
 :::note 
 Event-based vs Continuous Loop
-In a typical Arduino sketch, logic lives inside `loop()` and runs forever. Here, `loop()` is empty. The Arduino only reacts when Python sends a command via the Bridge. This makes the system more predictable and easier to reason about — Python is the "brain", Arduino is the "muscle".
+In a typical Arduino sketch, logic lives inside `loop()` and runs forever. Here, `loop()` is empty. The Arduino only reacts when Python sends a command via the Bridge. This makes the system more predictable and easier to reason about: Python is the "brain", Arduino is the "muscle".
 :::
 
 ---

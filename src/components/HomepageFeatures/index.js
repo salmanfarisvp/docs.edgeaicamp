@@ -26,7 +26,7 @@ const FEATURES = [
     icon: '🤖',
     title: 'Physical AI',
     description:
-      'Bridge AI and the real world. Sensors, actuators, and real-time AI inference on embedded systems — making machines that perceive and react.',
+      'Bridge AI and the real world. Sensors, actuators, and real-time AI inference on embedded systems: making machines that perceive and react.',
     link: '/docs/physical-ai/introduction',
     linkLabel: 'Explore Physical AI →',
     accent: '#7c3aed',
@@ -35,7 +35,7 @@ const FEATURES = [
     icon: '📱',
     title: 'TinyML',
     description:
-      'Deploy ML models on microcontrollers. Keyword spotting, gesture recognition, anomaly detection — all running on tiny, low-power hardware.',
+      'Deploy ML models on microcontrollers. Keyword spotting, gesture recognition, anomaly detection: all running on tiny, low-power hardware.',
     link: '/docs/tinyml/introduction',
     linkLabel: 'Start TinyML →',
     accent: '#059669',
@@ -44,7 +44,7 @@ const FEATURES = [
     icon: '🛠️',
     title: 'Project Examples',
     description:
-      'Follow complete project walkthroughs — smart gesture controllers, voice-activated devices, predictive maintenance sensors, and more.',
+      'Follow complete project walkthroughs: smart gesture controllers, voice-activated devices, predictive maintenance sensors, and more.',
     link: '/docs/projects/overview',
     linkLabel: 'View Projects →',
     accent: '#dc2626',
@@ -86,7 +86,7 @@ export default function HomepageFeatures() {
             Everything Covered in the Workshop
           </Heading>
           <p className={styles.sectionSub}>
-            Comprehensive docs spanning hardware setup, core concepts, and end-to-end projects —
+            Comprehensive docs spanning hardware setup, core concepts, and end-to-end projects:
             so you can focus on building, not searching.
           </p>
         </div>

@@ -18,19 +18,19 @@ An Impulse has three stages:
 Raw Data  →  Signal Processing (DSP)  →  Learning Block  →  Output
 ```
 
-1. **Input block** — defines the type of data (time series, image, audio) and the window size.
-2. **Processing block (DSP)** — extracts meaningful features from the raw data (e.g. spectral features from accelerometer data, MFCCs from audio).
-3. **Learning block** — the ML algorithm that trains on those features (e.g. a neural network classifier, K-means anomaly detection).
+1. **Input block**: defines the type of data (time series, image, audio) and the window size.
+2. **Processing block (DSP)**: extracts meaningful features from the raw data (e.g. spectral features from accelerometer data, MFCCs from audio).
+3. **Learning block**: the ML algorithm that trains on those features (e.g. a neural network classifier, K-means anomaly detection).
 
 ---
 
 ## Creating Your Impulse
 
 1. In Edge Impulse Studio, go to **Impulse design → Create impulse**.
-2. **Set the input block** — choose your sensor type and window size. For gesture recognition with the IMU, a window of 1000ms with a stride of 500ms is a good starting point.
-3. **Add a processing block** — click **Add a processing block**. For IMU data, select **Spectral Analysis**. For audio, select **MFCCs**.
-4. **Add a learning block** — click **Add a learning block**. For classification, select **Classification (Keras)**. Edge Impulse will recommend one based on your data type.
-5. Set your **output labels** — these are the class names from your dataset (e.g. `wave`, `punch`, `idle`).
+2. **Set the input block**: choose your sensor type and window size. For gesture recognition with the IMU, a window of 1000ms with a stride of 500ms is a good starting point.
+3. **Add a processing block**: click **Add a processing block**. For IMU data, select **Spectral Analysis**. For audio, select **MFCCs**.
+4. **Add a learning block**: click **Add a learning block**. For classification, select **Classification (Keras)**. Edge Impulse will recommend one based on your data type.
+5. Set your **output labels**: these are the class names from your dataset (e.g. `wave`, `punch`, `idle`).
 6. Click **Save Impulse**.
 
 ---
@@ -40,10 +40,10 @@ Raw Data  →  Signal Processing (DSP)  →  Learning Block  →  Output
 After saving, click on the processing block (e.g. **Spectral features**) in the left sidebar to configure it.
 
 - You'll see a live preview of how the raw data is transformed into features.
-- Use the default settings to start — they work well for most IMU and audio projects.
+- Use the default settings to start: they work well for most IMU and audio projects.
 - Click **Save parameters**, then **Generate features**.
 
-Generating features processes your entire dataset and produces a **Feature Explorer** — a 3D visualisation showing how well-separated your classes are. Well-separated clusters mean the model will likely perform well.
+Generating features processes your entire dataset and produces a **Feature Explorer**: a 3D visualisation showing how well-separated your classes are. Well-separated clusters mean the model will likely perform well.
 
 ---
 
@@ -51,9 +51,9 @@ Generating features processes your entire dataset and produces a **Feature Explo
 
 Click on the learning block (e.g. **Classifier**) to set up training:
 
-- **Number of training cycles** — how many epochs to train for (start with 30–50).
-- **Learning rate** — how fast the model learns (default 0.0005 is a safe starting point).
-- **Neural network architecture** — Edge Impulse provides a default architecture. You can customise it as you get more comfortable.
+- **Number of training cycles**: how many epochs to train for (start with 30–50).
+- **Learning rate**: how fast the model learns (default 0.0005 is a safe starting point).
+- **Neural network architecture**: Edge Impulse provides a default architecture. You can customise it as you get more comfortable.
 
 You don't need to change these settings for your first model. The defaults are well-tuned for small edge datasets.
 

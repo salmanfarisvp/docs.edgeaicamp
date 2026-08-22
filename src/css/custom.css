@@ -1,5 +1,5 @@
 /**
- * Physical AI Bootcamp — Custom CSS
+ * Physical AI Bootcamp: Custom CSS
  * Primary brand color: #03979d (teal)
  */
 
@@ -15,7 +15,7 @@
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
-  /* Hero gradient — deep teal */
+  /* Hero gradient: deep teal */
   --pab-hero-gradient: linear-gradient(135deg, #041c1d 0%, #023234 55%, #033f42 100%);
 }
 

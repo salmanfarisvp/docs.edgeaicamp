@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Smart Camera Intruder Alert System
 
-A camera-based vision project that detects the presence of a person (or unauthorised object) in a monitored area and triggers a local alert. The model runs entirely on the Arduino Q — no cloud, no internet required.
+A camera-based vision project that detects the presence of a person (or unauthorised object) in a monitored area and triggers a local alert. The model runs entirely on the Arduino Q: no cloud, no internet required.
 
 ```
 Camera → Image Classifier (Edge Impulse) → Decision (Python) → Alert (Buzzer / LED)
@@ -14,7 +14,7 @@ Camera → Image Classifier (Edge Impulse) → Decision (Python) → Alert (Buzz
 
 ## The Idea
 
-Mount a camera in a fixed position — pointing at a door, window, or restricted area. The model continuously classifies the camera feed. When it detects a person (or any class you define as an intrusion), it signals the Arduino side via the Bridge to trigger a buzzer or LED alert.
+Mount a camera in a fixed position: pointing at a door, window, or restricted area. The model continuously classifies the camera feed. When it detects a person (or any class you define as an intrusion), it signals the Arduino side via the Bridge to trigger a buzzer or LED alert.
 
 This is a real-world use case: on-device vision for security without sending data to the cloud.
 
@@ -43,11 +43,11 @@ This is a real-world use case: on-device vision for security without sending dat
 
 ## How It Works
 
-1. **Camera captures frames** — Python reads frames from the USB camera continuously.
-2. **Model runs inference** — the Edge Impulse image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `empty`).
-3. **Decision logic in Python** — if the `person` class confidence exceeds a threshold (e.g. 0.8), Python calls the Arduino via the Bridge.
-4. **Arduino triggers the alert** — the MCU receives the signal and activates the buzzer or LED.
-5. **Alert resets** — when no person is detected for a set number of frames, the alert is cleared.
+1. **Camera captures frames**: Python reads frames from the USB camera continuously.
+2. **Model runs inference**: the Edge Impulse image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `empty`).
+3. **Decision logic in Python**: if the `person` class confidence exceeds a threshold (e.g. 0.8), Python calls the Arduino via the Bridge.
+4. **Arduino triggers the alert**: the MCU receives the signal and activates the buzzer or LED.
+5. **Alert resets**: when no person is detected for a set number of frames, the alert is cleared.
 
 ---
 
@@ -57,7 +57,7 @@ This is a real-world use case: on-device vision for security without sending dat
 
 You need two classes of images:
 
-- **`person`** — photos of a person in the camera's field of view (different angles, distances, lighting).
+- **`person`**: photos of a person in the camera's field of view (different angles, distances, lighting).
 
 Collect at least **40–50 images per class**(if you have multiple class). Use your laptop camera or mobile phone QR method in Edge Impulse Studio.
 
@@ -65,12 +65,12 @@ Collect at least **40–50 images per class**(if you have multiple class). Use y
 
 - **Input block:** Image, 96×96 px (grayscale or RGB)
 - **Processing block:** Image (flatten or use transfer learning)
-- **Learning block:** Transfer Learning (MobileNetV1 96×96) — recommended for image classification on edge
+- **Learning block:** Transfer Learning (MobileNetV1 96×96): recommended for image classification on edge
 
 ### 3. Train and Test
 
 - Target **85%+ accuracy** on the test set.
-- Check the confusion matrix — make sure `person` is not being confused with `empty`.
+- Check the confusion matrix: make sure `person` is not being confused with `empty`.
 - Use **Live classification** to test with your camera before deploying.
 
 ### 4. Deploy
@@ -81,7 +81,7 @@ Export as an **Arduino library** and import it into Arduino App Lab.
 
 ## The Code
 
-### `main.py` — Python side
+### `main.py`: Python side
 
 ```python
 from arduino.app_utils import *
@@ -195,7 +195,7 @@ detection_stream.on_detect_all(send_detections_to_ui)
 App.run()
 ```
 
-### `sketch.ino` — Arduino side
+### `sketch.ino`: Arduino side
 
 ```cpp
 #include <Arduino_RouterBridge.h>
@@ -236,7 +236,7 @@ void loop() {
 
 :::note
  Event-based Alert
-The Arduino does nothing on its own — it only fires when Python sends a signal via the Bridge. This keeps the MCU free and responsive.
+The Arduino does nothing on its own: it only fires when Python sends a signal via the Bridge. This keeps the MCU free and responsive.
 :::
 
 ---

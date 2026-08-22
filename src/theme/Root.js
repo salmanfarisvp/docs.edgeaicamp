@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styles from './Root.module.css';
 
 // ─────────────────────────────────────────
-// 🔒 PIN GATE CONFIG — edit these two lines
+// 🔒 PIN GATE CONFIG: edit these two lines
 const ENABLE_PIN = false;       // ← set to true to enable the PIN gate
 const CORRECT_PIN = '1234';     // ← change to your PIN
 // ─────────────────────────────────────────
