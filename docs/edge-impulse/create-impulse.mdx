@@ -26,12 +26,29 @@ Raw Data  →  Signal Processing (DSP)  →  Learning Block  →  Output
 
 ## Creating Your Impulse
 
+You can start a new Edge Impulse project from the web, or from App Lab (**AI models** → **Train new AI model**).
+
+### Camera / image projects (Day 1 default)
+
+1. In Edge Impulse Studio, go to **Impulse design → Create impulse**.
+2. **Input block:** Image, 96×96 px (RGB or grayscale).
+3. **Processing block:** Image (or transfer-learning defaults).
+4. **Learning block:** Transfer Learning (for example MobileNet 96×96).
+5. Set **output labels** to match your dataset and your App Lab code (for the starter camera App: `person` and `non person`).
+6. Click **Save Impulse**.
+
+When the model is trained, attach it in App Lab: Video Image Classification Brick → **AI models** → **Download** → **Brick Configuration**. See [Model Testing & Deployment](/docs/edge-impulse/model-deployment).
+
+### IMU / audio projects (gesture or sound)
+
 1. In Edge Impulse Studio, go to **Impulse design → Create impulse**.
 2. **Set the input block**: choose your sensor type and window size. For gesture recognition with the IMU, a window of 1000ms with a stride of 500ms is a good starting point.
 3. **Add a processing block**: click **Add a processing block**. For IMU data, select **Spectral Analysis**. For audio, select **MFCCs**.
 4. **Add a learning block**: click **Add a learning block**. For classification, select **Classification (Keras)**. Edge Impulse will recommend one based on your data type.
 5. Set your **output labels**: these are the class names from your dataset (e.g. `wave`, `punch`, `idle`).
 6. Click **Save Impulse**.
+
+On UNO Q, attach that model from the matching Brick (for example **Motion Detection** or **Keyword Spotting**), not from an Arduino library `.zip`.
 
 ---
 
@@ -62,7 +79,7 @@ You don't need to change these settings for your first model. The defaults are w
 ## Your Turn
 
 - [ ] Go to **Impulse design** and create a new Impulse for your project.
-- [ ] Add the correct processing block for your data type.
-- [ ] Add a Classification learning block and set your output labels.
+- [ ] For a camera project, use Image input + Transfer Learning. For IMU, use Spectral Analysis.
+- [ ] Set output labels that match your App Lab `on_detect(...)` class names.
 - [ ] Save the Impulse and generate features.
-- [ ] Open the **Feature Explorer** and check that your classes form distinct clusters.
+- [ ] Open the **Feature Explorer** (or review training results) and check that your classes are separable.

@@ -9,22 +9,25 @@ Edge Impulse is the leading development platform for machine learning on edge de
 * With Edge Impulse, software developers, engineers, and domain experts can solve real problems using machine learning on edge devices without a Ph.D. or advanced embedded engineering skills. From getting started to MLOps in production, Edge Impulse provides maximum efficiency and speed on a wide range of hardware from MCUs to CPUs.  
 
 ![](https://workshop.makergram.com/assets/images/EI_homepage-727937c7021413632212b5105c89d835.png)
-With EdgeImpulse we can
-* Collect dataset from the device direclty
-* Collect dataset from other source like .zip file, via api or other third party cloud ingestion
-* Create test and train data and put them in different lables
-* Train our model
-* Able to Select approriate ML algoirthms - EI provide recommended ML algorithms based on our dataset
-* Deploy it on our harware
-* TinyML project collabration with version controlling
-* and much more that helps you to build tinyML applications.
+With Edge Impulse we can:
+
+* Collect images from a laptop camera, phone QR code, or file upload (no device daemon required for this bootcamp)
+* Collect other datasets by upload (including a data `.zip`), API, or third-party ingestion
+* Split data into train and test sets with labels
+* Train a model with recommended learning blocks
+* Attach the trained model to an **Arduino App Lab Brick** on UNO Q
+* Collaborate on TinyML projects
+
+:::note
+A data `.zip` is only for uploading samples into Studio. It is not how you put a model on the UNO Q. For the board, sign in to Edge Impulse from App Lab and select the model on the Brick.
+:::
 
 
 ## Why we use edge impulse
 
 ![](https://workshop.makergram.com/assets/images/edge-impulse-studio-226a9fa209c8e212fb483b7e17e24183.png)
 
-We use edge impulse to collect the data, create model, and train using the ML algorithms. It's free and easy to use and it will be generate arduino library so that we can quickly start with prototyping. 
+We use Edge Impulse to collect data, train a model, and attach that model to an Arduino App Lab Brick on the UNO Q. You sign in to Edge Impulse from App Lab: you do not import an Arduino library `.zip`. 
 
 
 ### Create Edge impulse account

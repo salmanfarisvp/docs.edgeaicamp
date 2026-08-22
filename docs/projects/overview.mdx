@@ -18,7 +18,7 @@ On a **[1-day introduction](/docs/getting-started/bootcamp-overview#schedule)** 
 
 ## Project Build (Day 1)
 
-The facilitator leads the full group through one complete Physical AI project from start to finish: data collection, model training on Edge Impulse, deployment to Arduino Q, and actuator response. This is your reference for Day 2.
+The facilitator leads the full group through one complete Physical AI project from start to finish: collect data in Edge Impulse, train, attach the model from an App Lab Brick, and trigger an actuator over the Bridge. This is your reference for Day 2.
 
 *Project TBD based on batch: confirmed on Day 1.*
 
@@ -27,8 +27,9 @@ The facilitator leads the full group through one complete Physical AI project fr
 ## Project Ideas for Day 2
 
 ### 🎤 Gesture / Motion Classifier
-**Sensors:** IMU (Accelerometer + Gyro)  
-**Model:** Motion classification: TinyML on Edge Impulse  
+**Sensors:** IMU (onboard on UNO Q, or the kit IMU module)  
+**Model:** Motion classification in Edge Impulse  
+**App Lab Brick:** Motion Detection  
 **Actuator:** LED, Servo, Buzzer  
 **Idea:** Classify specific hand gestures or arm movements and trigger a corresponding response (rotate servo, change LED colour, sound alert).
 
@@ -36,15 +37,21 @@ The facilitator leads the full group through one complete Physical AI project fr
 
 ### 👁️ Visual Classifier
 **Sensors:** USB Camera  
-**Model:** Image classification: Edge Impulse FOMO or MobileNet  
-**Actuator:** LED, Relay, Buzzer  
-**Idea:** Detect a specific object, person presence, or condition from camera feed and trigger an action.
+**Model:** Image classification in Edge Impulse (MobileNet / transfer learning)  
+**App Lab Brick:** Video Image Classification  
+**Actuator:** LED, Relay, Buzzer, Telegram  
+**Idea:** Detect a specific object, person presence, or condition from the camera feed and trigger an action. Day 1 uses this path. See [Smart Camera Intruder Alert](/docs/projects/smart-camera-intruder-alert).
+
+:::note
+FOMO is object detection, not image classification. If you train FOMO, use the **Video Object Detection** Brick instead.
+:::
 
 ---
 
 ### 🔊 Sound Classifier
 **Sensors:** USB Camera with built-in mic, or Microphone Module (if camera unavailable)  
 **Model:** Sound classification: keyword spotting or event detection  
+**App Lab Brick:** Keyword Spotting or Audio Classification  
 **Actuator:** LED, Servo, Buzzer  
 **Idea:** Detect a specific sound (clap, voice command, alarm) and respond with an actuator.
 
@@ -60,7 +67,8 @@ The facilitator leads the full group through one complete Physical AI project fr
 
 ### 🚗 Driver Drowsiness Monitor *(Community Suggestion)*
 **Sensors:** USB Camera  
-**Model:** Eye-state or head-pose classification  
+**Model:** Eye-state or head-pose classification in Edge Impulse  
+**App Lab Brick:** Video Image Classification  
 **Actuator:** Buzzer alert  
 **Idea:** Detect when a driver's eyes are closed or head is drooping and trigger an alert. (Autonomous Car Monitoring: driver sleeping use case.)
 
@@ -68,7 +76,8 @@ The facilitator leads the full group through one complete Physical AI project fr
 
 ### 📋 AI-Based Attendance System *(Community Suggestion)*
 **Sensors:** USB Camera  
-**Model:** Face detection / presence classification  
+**Model:** Face detection / presence classification in Edge Impulse  
+**App Lab Brick:** Video Image Classification (or Video Object Detection if you use bounding boxes)  
 **Actuator:** OLED display, LED indicator  
 **Idea:** Detect presence of a person and log attendance automatically using an on-device vision model.
 
@@ -76,7 +85,8 @@ The facilitator leads the full group through one complete Physical AI project fr
 
 ### 🌡️ Anomaly Detection on Sensor Data
 **Sensors:** Temperature Sensor, Vibration Sensor  
-**Model:** Anomaly detection autoencoder: Edge Impulse  
+**Model:** Anomaly detection autoencoder in Edge Impulse  
+**App Lab Brick:** matching sensor / anomaly Brick if available, or run inference in Python after attaching the EI model  
 **Actuator:** Buzzer, LED alert  
 **Idea:** Learn what "normal" looks like and flag deviations: mimics industrial predictive maintenance.
 
@@ -86,7 +96,7 @@ The facilitator leads the full group through one complete Physical AI project fr
 
 | Project | Sensors Needed | Difficulty |
 |---|---|---|
-| Gesture Classifier | IMU (built-in on Arduino Q) | ★☆☆ Beginner |
+| Gesture Classifier | Onboard IMU (or kit IMU) | ★☆☆ Beginner |
 | Sound Classifier | USB Camera / Mic Module | ★☆☆ Beginner |
 | Visual Classifier | USB Camera | ★★☆ Intermediate |
 | Anomaly Detection | Temp + Vibration Sensors | ★★☆ Intermediate |
@@ -95,7 +105,7 @@ The facilitator leads the full group through one complete Physical AI project fr
 | Attendance System | USB Camera | ★★☆ Intermediate |
 
 :::tip Recommended for First-Timers
-Start with the **Gesture Classifier**: it uses only the built-in IMU on the Arduino Q (no extra wiring), and the full pipeline (data → train → deploy → demo) takes about 90 minutes.
+Start with the **Visual Classifier**: the Day 1 starter App already uses the USB camera and the Video Image Classification Brick. Gesture classification is also a good first project if you use the onboard IMU.
 :::
 
 ---
@@ -115,4 +125,4 @@ Each team submits:
 ## Next Steps
 
 → [Bootcamp Inventory](/docs/inventory/bootcamp-inventory): check what hardware is available for your chosen project  
-→ [Arduino Q First Project](/docs/arduino-q/first-project): get comfortable with the board before Day 2 build
+→ [Arduino App Lab](/docs/arduino-q/app-lab): get comfortable with the board before Day 2 build

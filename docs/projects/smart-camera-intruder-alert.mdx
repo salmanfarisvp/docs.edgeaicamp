@@ -96,12 +96,30 @@ The token is **not** stored in `main.py`. App Lab keeps it in the **Telegram Bot
 
 You do not need to paste a chat ID into the code. After `/start`, the App saves it automatically.
 
+The imported App already includes the **Video Image Classification** Brick (with a `person-classification` model), **Web UI**, and **Telegram Bot**. You do not add those Bricks by hand unless you are starting from a blank App.
+
+### 5. Use your own Edge Impulse model (optional)
+
+Do **not** export an Edge Impulse **Arduino library** `.zip`. That flow is for classic MCU sketches. On UNO Q, the model is attached from the Brick after you sign in to Edge Impulse in App Lab.
+
+1. Open the imported App.
+2. In the left panel, click the **Video Image Classification** Brick.
+3. Open the **AI models** tab.
+4. Sign in with your **Arduino** account, then **Connect to Edge Impulse**.
+5. Pick a model from the list, or click **Train new AI model** to open Edge Impulse Studio.
+6. When the model is ready, return to App Lab, click **Download** on that model, then open **Brick Configuration**.
+7. Select the downloaded model and click **Save**. App Lab writes it into `app.yaml` for you.
+
+Class names in `main.py` must match your Edge Impulse labels exactly (this starter uses `person` and `non person`).
+
+For the full train-and-attach flow, see [Model Testing & Deployment](/docs/edge-impulse/model-deployment).
+
 ---
 
 ## How It Works
 
 1. **Camera captures frames**: Python reads frames from the USB camera continuously.
-2. **Model runs inference**: the image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `empty`).
+2. **Model runs inference**: the image classifier processes each frame on-device and returns a confidence score for each class (e.g. `person`, `non person`).
 3. **Decision logic in Python**: if the `person` class confidence exceeds a threshold, Python calls the Arduino via the Bridge and sends a Telegram photo.
 4. **Arduino triggers the alert**: the MCU receives the signal and activates the buzzer or LED.
 5. **Alert resets**: when no person is detected, the local alert is cleared. Telegram photos are rate-limited so the bot is not spammed.
@@ -110,13 +128,16 @@ You do not need to paste a chat ID into the code. After `/start`, the App saves 
 
 ## Building the Model on Edge Impulse
 
+The starter App already runs a person classifier. Follow this section only if you want to train your own model, then attach it from the Brick as in step 5 above.
+
 ### 1. Collect Data
 
-You need two classes of images:
+You need two classes of images. Use the **same label names** as the code:
 
 - **`person`**: photos of a person in the camera's field of view (different angles, distances, lighting).
+- **`non person`**: the same scene with nobody in view.
 
-Collect at least **40–50 images per class**(if you have multiple class). Use your laptop camera or mobile phone QR method in Edge Impulse Studio.
+Collect at least **40–50 images per class**. In Edge Impulse Studio, use your laptop camera or the mobile phone QR method. You can start Studio from App Lab (**Train new AI model**) after signing in.
 
 ### 2. Create the Impulse
 
@@ -127,12 +148,18 @@ Collect at least **40–50 images per class**(if you have multiple class). Use y
 ### 3. Train and Test
 
 - Target **85%+ accuracy** on the test set.
-- Check the confusion matrix: make sure `person` is not being confused with `empty`.
-- Use **Live classification** to test with your camera before deploying.
+- Check the confusion matrix: make sure `person` is not being confused with `non person`.
+- Use **Live classification** in Studio with your laptop or phone camera.
 
-### 4. Deploy
+### 4. Attach the model in App Lab
 
-Export as an **Arduino library** and import it into Arduino App Lab.
+Do **not** use **Deployment → Arduino library** and do **not** use **Sketch → Include Library → Add .ZIP Library**.
+
+1. In Edge Impulse, you can leave deployment to App Lab: after training, go back to the App.
+2. Open the **Video Image Classification** Brick → **AI models**.
+3. **Download** your Edge Impulse model, then choose it in **Brick Configuration** and **Save**.
+
+The classifier runs on the UNO Q Linux side (Python Brick). The Arduino sketch only drives the buzzer/LED over the Bridge.
 
 ---
 
@@ -403,12 +430,12 @@ The Arduino does nothing on its own: it only fires when Python sends a signal vi
 
 ## Your Turn
 
-- [ ] Download the **Intruder Alert via Telegram** `.zip` and import it in App Lab.
+- [ ] Download the **Intruder Alert via Telegram** App `.zip` and import it in App Lab (leave it zipped).
 - [ ] Create a Telegram bot with **@BotFather** and paste the token into the **Telegram Bot** Brick.
 - [ ] Send `/start` to your bot, then verify a photo arrives when you step in front of the camera.
-- [ ] Collect at least **40 images** for each class (`person` and `empty`) if you train your own model.
+- [ ] Collect at least **40 images** for each class (`person` and `non person`) if you train your own model.
 - [ ] Train a model in Edge Impulse and hit **85%+ test accuracy**.
-- [ ] Deploy the model as an Arduino library.
+- [ ] In App Lab, open the **Video Image Classification** Brick, sign in to Edge Impulse, **Download** the model, and select it in **Brick Configuration**.
 - [ ] Wire up a buzzer or LED to the Arduino Q.
 - [ ] Run the full system and verify the alert triggers when you step in front of the camera.
 - [ ] Document each step on [Arduino Project Hub](https://projecthub.arduino.cc/).

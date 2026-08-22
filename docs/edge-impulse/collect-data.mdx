@@ -6,7 +6,9 @@ sidebar_position: 2
 
 Data is the foundation of any machine learning model. Before you can train a model, you need a labelled dataset that represents the different classes you want to recognise.
 
-During this bootcamp we collect image data: either by uploading existing images, taking photos directly from your laptop camera, or using your mobile phone by scanning a QR code. **No CLI or terminal is needed.**
+During this bootcamp we collect data in **Edge Impulse Studio**. For the camera project that is images: upload files, use your laptop camera, or scan a QR code with your phone. **No CLI, daemon, or Arduino library `.zip` is needed.**
+
+You can open Studio from the web, or from App Lab: click an AI Brick → **AI models** → **Train new AI model** (sign in with Arduino, then connect Edge Impulse).
 
 ---
 
@@ -90,3 +92,4 @@ A good starting split is **80% training / 20% test**. Edge Impulse handles this 
 - [ ] Aim for a minimum of **20 images per class**.
 - [ ] Verify your images appear in the dataset with the correct labels.
 - [ ] Check that your dataset is split into Training and Test sets.
+- [ ] Remember: class names here must match the labels in your App Lab Python code (`on_detect("person")` and so on).

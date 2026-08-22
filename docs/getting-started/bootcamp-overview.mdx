@@ -30,10 +30,10 @@ Day 1 is shared. The **1-day introduction** ends after Session 5. The **2-day fu
 |---|---|---|---|
 | **DAY 1: Foundations of Physical Intelligence** | | | |
 | 9:00 – 10:00 | Sessions 1 + 2: Physical AI & Edge Computing | Theory | What is Physical AI? Sensor → Model → Decision → Actuator. Cloud AI vs. Edge AI: latency, privacy, and power. |
-| 10:00 – 11:30 | Session 3: Embedded Systems with Arduino Q | Practical | Hands-on with the Arduino Q board. IDE setup, uploading code, reading sensors, controlling outputs, serial monitor debugging. |
-| 11:30 – 1:00 | Session 4: TinyML Simplified | Theory + Practical | What TinyML is and how it works. Using Edge Impulse to collect data, train a model, and deploy it to Arduino Q. |
+| 10:00 – 11:30 | Session 3: Embedded Systems with Arduino UNO Q | Practical | Hands-on with the UNO Q in **Arduino App Lab** (PC Hosted Mode). Run an example App, see Python (`main.py`) and the sketch (`sketch.ino`), and use the Bridge. |
+| 11:30 – 1:00 | Session 4: TinyML Simplified | Theory + Practical | What TinyML is and how it works. Collect data and train in Edge Impulse, then attach the model from an App Lab Brick (sign in → AI models → Download → Brick Configuration). |
 | 1:00 – 2:00 | Lunch | - | - |
-| 2:00 – 3:40 | Session 5: Project Build | Theory + Practical | Build a complete Physical AI project as a group: sensor data → Edge Impulse → trained model → Arduino Q → actuator response. |
+| 2:00 – 3:40 | Session 5: Project Build | Theory + Practical | Build a complete Physical AI project as a group: camera or sensor → Edge Impulse → App Lab Brick → Bridge → actuator. |
 | 3:40 – 4:00 | Session 6: Project Ideation & System Design *(2-day only)* | Team/Design | Teams form and brainstorm their Day 2 project. Define the problem, choose sensors and actuators, sketch the system architecture. On the 1-day introduction this slot is wrap-up: recap, certificates, kit return. |
 | **DAY 2: Build & Showcase** *(2-day only)* | | | |
 | | Recap & Architecture Review | Discussion | Quick recap of Day 1 concepts. Teams present their system design for feedback before building. |
@@ -50,28 +50,29 @@ On the 1-day introduction, Project Hub documentation and the [Day 2 project idea
 
 | Tool | Purpose |
 |---|---|
-| Arduino IDE 2.x | Write and flash code to Arduino Q MCU |
-| Arduino App Lab | Write and flash code to Arduino Q |
-| Edge Impulse | Collect data, train and deploy TinyML models |
+| Arduino App Lab | Create, import, and Run Apps on the UNO Q (Python + sketch + Bricks) |
+| Edge Impulse | Collect data and train models; attach them from an App Lab Brick after sign-in |
 | Arduino Project Hub | Document and share your project |
-| VS Code | IDE for Arduino Q and SSH  |
-| Arduino CLI | Command line tool for Arduino Q |
+| Telegram | Optional: bot alerts in the camera project |
+
+:::note
+This bootcamp uses **App Lab in PC Hosted Mode**. You do not need Arduino IDE, Arduino CLI, or VS Code SSH for the core sessions.
+:::
 
 ---
 
 ## Pre-Requisites (Before You Arrive)
 
-- [ ] Install **Arduino IDE 2.x**: **[arduino.cc/en/software](https://www.arduino.cc/en/software)**
 - [ ] Install **Arduino App Lab**: **[docs.arduino.cc/software/app-lab/](https://docs.arduino.cc/software/app-lab/)**
-- [ ] Install **VS Code**: **[code.visualstudio.com](https://code.visualstudio.com)**
-- [ ] Create a free account at **[edgeimpulse.com](https://edgeimpulse.com)**
+- [ ] Create a free **Arduino** account (App Lab will ask you to sign in for Edge Impulse models)
+- [ ] Create a free account at **[studio.edgeimpulse.com](https://studio.edgeimpulse.com)** (or connect it from App Lab later)
 - [ ] Create a free account at **[projecthub.arduino.cc](https://projecthub.arduino.cc)**
-- [ ] Install **Arduino CLI**: `npm install -g @arduino/cli`
 - [ ] Charge your laptop: sessions run 9 AM to 4 PM
+- [ ] Bring a USB-C cable that supports **data**, not charge-only
 
 ---
 
 ## Next Steps
 
-- [Arduino Q Setup](/docs/arduino-q/overview): get your hardware ready before Day 1
-- [Edge AI, Physical AI & TinyML](/docs/core-concepts): read the core concepts ahead of time
+- [Arduino UNO Q Setup](/docs/arduino-q/overview): get your hardware ready before Day 1
+- [What is Physical AI?](/docs/fundamentals/what-is-physical-ai): read the core concepts ahead of time

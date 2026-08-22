@@ -34,6 +34,22 @@ From the list, we can select a Brick, and add it to our App:
 
 ---
 
+## AI models on a Brick
+
+Some Bricks run an on-device model: **Video Image Classification**, **Video Object Detection**, keyword spotting, and similar.
+
+To use an Edge Impulse model on the UNO Q:
+
+1. Add the Brick (or open it if the App already includes it).
+2. Click the Brick and open the **AI models** tab.
+3. Sign in with your **Arduino** account, then **Connect to Edge Impulse**.
+4. Pick a listed model, or click **Train new AI model**.
+5. Click **Download**, then choose the model in **Brick Configuration** and **Save**.
+
+Do not import an Edge Impulse **Arduino library** `.zip` into App Lab. On UNO Q the model is selected from the Brick. The Arduino sketch still talks to sensors and actuators over the Bridge.
+
+---
+
 ## Your Turn
 
 - [ ] Open an existing App (or create a new one) in Arduino App Lab.
@@ -42,6 +58,7 @@ From the list, we can select a Brick, and add it to our App:
 - [ ] Add the Brick to your App and open `main.py`.
 - [ ] Call one of the Brick's functions, for example: `get_forecast_by_city("London")`, and print the result.
 - [ ] Run the App and read the output in the terminal.
+- [ ] On an AI Brick, open **AI models**, sign in to Edge Impulse, and note how you would **Download** a model (you do not need to train one yet).
 
 :::tip
 Try swapping the city name with your own city and see if the Brick returns accurate data.

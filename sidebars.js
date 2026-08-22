@@ -36,6 +36,7 @@ const sidebars = {
         'arduino-q/app-lab',
         'arduino-q/apps',
         'arduino-q/brick',
+        'arduino-q/run-example-projects',
         'arduino-q/example-projects',
       ],
     },
@@ -54,8 +55,8 @@ const sidebars = {
       label: '🧪 Exercises',
       collapsed: false,
       items: [
-        'exercises/mpu-mcu-bridge-message',
         'exercises/bridge-blink',
+        'exercises/mpu-mcu-bridge-message',
       ],
     },
     {

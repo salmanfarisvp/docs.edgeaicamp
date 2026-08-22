@@ -40,33 +40,38 @@ If test accuracy is significantly lower than training accuracy, your model is li
 
 ## Step 3: Live Classification
 
-You can test the model in real time directly from your connected device before deploying.
+Test in Edge Impulse Studio before you attach the model to the board.
 
 1. Go to **Live classification** in Edge Impulse Studio.
-2. Make sure your device is connected via `edge-impulse-daemon`.
-3. Perform one of your gestures or trigger a class.
-4. Watch the model output confidence scores in real time.
+2. Use your **laptop camera** or **phone** (QR code) as the input. You do not need `edge-impulse-daemon` for this bootcamp image flow.
+3. Trigger each class (for example step into frame, then step out).
+4. Watch the confidence scores in real time.
 
-This is the fastest way to spot if something is wrong before flashing.
-
----
-
-## Step 4: Deploy to Arduino Q
-
-Edge Impulse can export your trained model as an Arduino library that you can import directly into App Lab.
-
-1. Go to **Deployment** in Edge Impulse Studio.
-2. Select **Arduino library** as the deployment target.
-3. Choose **Quantized (int8)** for the smallest model size (recommended for MCU deployment).
-4. Click **Build**: Edge Impulse will compile the model and download a `.zip` file.
-5. In Arduino App Lab (or Arduino IDE), go to **Sketch → Include Library → Add .ZIP Library** and import the downloaded file.
-6. The library is now available in your sketch. Use `ei_impulse_result_t` and `run_classifier()` to run inference.
+This is the fastest way to spot label or lighting problems before you use the model on the UNO Q.
 
 ---
+
+## Step 4: Attach the model in Arduino App Lab
+
+On the UNO Q, inference runs on the **Linux side** through an App Lab **Brick** (Python), not inside the Arduino sketch. Do **not** export an **Arduino library** `.zip`, and do **not** use **Sketch → Include Library → Add .ZIP Library**. That zip is for classic MCU boards in Arduino IDE.
+
+The board flow is: sign in to Edge Impulse from App Lab → pick the model on the Brick → Download → Brick Configuration.
+
+1. Open your App in **Arduino App Lab** (or import a starter App).
+2. Click **Add Brick** if needed, and add the matching AI Brick. For a live USB camera classifier, that is **Video Image Classification**.
+3. Click the Brick, then open the **AI models** tab.
+4. Sign in with your **Arduino** account, then **Connect to Edge Impulse**.
+5. Choose a model from the list, or click **Train new AI model** to open Studio, train, and come back.
+6. Click **Download** on the model so App Lab installs it on the UNO Q.
+7. Open **Brick Configuration**, select that model, and click **Save**.
+
+App Lab writes the model name into `app.yaml`. You do not copy a `.eim` path by hand.
+
+In Python, the Brick runs the model. Your `sketch.ino` only handles actuators over the **Bridge** (LED, buzzer, and so on).
 
 :::tip
- Quantized vs Float
-Quantized (int8) models are smaller and faster on the MCU but may have slightly lower accuracy. Float32 models are more accurate but use more memory. For the Arduino Q's MCU, always start with quantized.
+Arduino library vs App Lab
+Keep an **App** `.zip` only when you are importing a whole App Lab project. An Edge Impulse **Arduino library** `.zip` is a different file and will not attach the model to a Brick.
 :::
 
 ---
@@ -75,6 +80,6 @@ Quantized (int8) models are smaller and faster on the MCU but may have slightly 
 
 - [ ] Train your model and note the training accuracy and loss.
 - [ ] Run **Classify all** on the test set and check the confusion matrix.
-- [ ] Use **Live classification** with your connected device to test at least two classes in real time.
-- [ ] Export the model as an **Arduino library** and import it into App Lab.
-- [ ] Call `run_classifier()` in your sketch and print the top prediction to the Serial Monitor.
+- [ ] Use **Live classification** in Studio (laptop or phone camera) to test at least two classes.
+- [ ] In App Lab, open the AI Brick, sign in to Edge Impulse, **Download** the model, and select it in **Brick Configuration**.
+- [ ] Run the App and confirm Python prints the expected class names.
